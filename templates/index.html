@@ -15,20 +15,17 @@
         <div class="logo">
             <img src="static/Asset/img/logo1.png" alt="Karim Bet Logo" class="logo-image">
         </div>
+
         <div class="header-options">
+          <div class="header-options">
+        {% if 'user_id' not in session %}
+            <a href="{{ url_for('signin') }}" class="button">Sign In</a>
+            <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
+        {% else %}
             <a href="{{ url_for('banking') }}" class="button">Banking</a>
-                <a href="{{ url_for('logout') }}" class="button">Logout</a>
-        </div>
-        {% if 'user_id' in session %}
-        <!-- Show these buttons only if the user is logged in -->
-        <a href="{{ url_for('banking') }}" class="button">Banking</a>
-        <a href="{{ url_for('logout') }}" class="button">Logout</a>
-        <p>Your Balance: ${{ balance }}</p>
-    {% else %}
-        <!-- Show the login and signup buttons if the user is not logged in -->
-        <a href="{{ url_for('signin') }}" class="button">Sign In</a>
-        <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
-    {% endif %}
+            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+        {% endif %}
+    </div>
        
     </header>
 
@@ -105,18 +102,13 @@
     <!-- Main Content -->
     <main class="main-content" id="mainContent">
 
-        {% if session.get('user_id') %}
-            <!-- Balance Section -->
-            <section class="user-balance">
-                <h2>Your Balance: ${{ balance }}</h2>
-                <h3>Balance History</h3>
-                <ul>
-                    {% for transaction in balance_history %}
-                        <li>{{ transaction[1] }} - {{ transaction[2] }} at {{ transaction[3] }}</li>
-                    {% endfor %}
-                </ul>
-            </section>
-        {% endif %}
+        {% if 'user_id' in session %}
+        <div class="balance-toggle">
+            <button id="toggleBalanceBtn" class="button">Tap to See Balance</button>
+            <div id="balanceBox" class="balance-box">
+            </div>
+        </div>
+    {% endif %}
 
         <!-- Hot Games Section -->
         <section class="hot-games">
@@ -176,6 +168,12 @@
     </footer>
 
     <script>
+        // Toggle Balance visibility
+    document.getElementById('toggleBalanceBtn').addEventListener('click', function() {
+        const balanceBox = document.getElementById('balanceBox');
+        balanceBox.style.display = (balanceBox.style.display === 'block') ? 'none' : 'block';
+    });
+    
         // Function to toggle the visibility of the mobile menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');

@@ -177,5 +177,15 @@ def logout():
     flash("You have been logged out.", "success")
     return redirect(url_for('index'))
 
+# Helper function to display the balance toggle
+@app.route('/toggle_balance')
+def toggle_balance():
+    if 'user_id' in session:
+        user_id = session['user_id']
+        balance = get_balance(user_id)
+        return render_template('banking.html', balance=balance)
+    else:
+        return redirect(url_for('signin'))
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -9,24 +9,145 @@
 <body>
     <header class="header">
         <div class="logo">
-            <img src="Asset/img/logo1.png" alt="Karim Bet Logo" class="logo-image">
+            <img src="static/Asset/img/logo1.png" alt="Karim Bet Logo" class="logo-image">
         </div>
     </header>
 
-    <main>
-        <h2>Sign In</h2>
-        <form method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Sign In</button>
-        </form>
-        <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+    <main class="main-content">
+        <div class="signin-container">
+            <h2>Sign In</h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="signin-btn">Sign In</button>
+            </form>
+            <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; Karim Bet</p>
+    <footer class="footer">
+        <p>&copy; Karim Bet 2024</p>
     </footer>
 </body>
 </html>
+
+<style>
+    /* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Font Setup */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+/* Header Styling */
+.header {
+    background-color: #333;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo-image {
+    max-width: 150px;
+}
+
+/* Main Content Styling */
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.signin-container {
+    background-color: #fff;
+    padding: 40px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    font-size: 14px;
+    color: #666;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 8px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Link Styling */
+p {
+    margin-top: 15px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Styling */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+  </style>
+  
