@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karim Bet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <!-- Optionally, you can add FontAwesome for icons -->
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <div class="logo">
+            <img src="static/Asset/img/logo1.png" alt="Karim Bet Logo" class="logo-image">
+        </div>
+        <div class="header-options">
+            <a href="{{ url_for('banking') }}" class="button">Banking</a>
+                <a href="{{ url_for('logout') }}" class="button">Logout</a>
+        </div>
+        {% if 'user_id' in session %}
+        <!-- Show these buttons only if the user is logged in -->
+        <a href="{{ url_for('banking') }}" class="button">Banking</a>
+        <a href="{{ url_for('logout') }}" class="button">Logout</a>
+        <p>Your Balance: ${{ balance }}</p>
+    {% else %}
+        <!-- Show the login and signup buttons if the user is not logged in -->
+        <a href="{{ url_for('signin') }}" class="button">Sign In</a>
+        <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
+    {% endif %}
+       
+    </header>
+
+    <!-- Mobile Menu -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-futbol"></i> Sports</li>
+            <li><i class="fas fa-casino"></i> Casino</li>
+            <li><i class="fas fa-gamepad"></i> Slot</li>
+            <li><i class="fas fa-table"></i> Table</li>
+            <li><i class="fas fa-fish"></i> Fishing</li>
+            <li><i class="fas fa-arcade"></i> Arcade</li>
+            <li><i class="fas fa-ticket-alt"></i> Lottery</li>
+            <!-- New Games Section -->
+            <li><i class="fas fa-chess"></i> Poker</li> <!-- Added new category -->
+            <li><i class="fas fa-bingo"></i> Bingo</li> <!-- Added new category -->
+            <li><i class="fas fa-basketball-ball"></i> Live Dealer</li> <!-- Added new category -->
+        </ul>
+    </nav>
+
+    <!-- Notice Bar -->
+    <div class="notice-bar">
+        <marquee behavior="scroll" direction="left">If you need this type of panel you can contact us. Thanks.</marquee>
+    </div>
+
+    <!-- Desktop Menu -->
+    <nav class="site-menu" id="desktopMenu">
+        <ul>
+            <li><i class="fas fa-home"></i> Home</li>
+            <li><i class="fas fa-futbol"></i> Sports</li>
+            <li><i class="fas fa-casino"></i> Casino</li>
+            <li><i class="fas fa-gamepad"></i> Slot</li>
+            <li><i class="fas fa-table"></i> Table</li>
+            <li><i class="fas fa-fish"></i> Fishing</li>
+            <li><i class="fas fa-arcade"></i> Arcade</li>
+            <li><i class="fas fa-ticket-alt"></i> Lottery</li>
+            <li><i class="fas fa-gift"></i> Promotions</li>
+            <li><i class="fas fa-users"></i> Referral Program</li>
+            <li><i class="fas fa-crown"></i> VIP</li>
+        </ul>
+    </nav>
+
+    <!-- Submenu -->
+    <nav class="submenu">
+        <ul>
+            <li onclick="loadSection('sports')">
+                <img src="static/Asset/img/game logo.svg" alt="Sports" class="submenu-icon"> Sports
+            </li>
+            <li onclick="loadSection('hot')">
+                <img src="static/Asset/img/hot.gif" alt="Hot" class="submenu-icon"> Hot
+            </li>
+            <li onclick="loadSection('casino')">
+                <img src="static/Asset/img/casino logo.svg" alt="Casino" class="submenu-icon"> Casino
+            </li>
+            <li onclick="loadSection('slot')">
+                <img src="static/Asset/img/icon-slot.svg" alt="Slot" class="submenu-icon"> Slot
+            </li>
+            <li onclick="loadSection('table')">
+                <img src="static/Asset/img/icon-table.svg" alt="Table" class="submenu-icon"> Table
+            </li>
+            <li onclick="loadSection('fishing')">
+                <img src="static/Asset/img/icon-fish.svg" alt="Fishing" class="submenu-icon"> Fishing
+            </li>
+            <li onclick="loadSection('arcade')">
+                <img src="static/Asset/img/icon-exchange.svg" alt="Arcade" class="submenu-icon"> Arcade
+            </li>
+            <li onclick="loadSection('lottery')">
+                <img src="static/Asset/img/icon-lottery.svg" alt="Lottery" class="submenu-icon"> Lottery
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+
+        {% if session.get('user_id') %}
+            <!-- Balance Section -->
+            <section class="user-balance">
+                <h2>Your Balance: ${{ balance }}</h2>
+                <h3>Balance History</h3>
+                <ul>
+                    {% for transaction in balance_history %}
+                        <li>{{ transaction[1] }} - {{ transaction[2] }} at {{ transaction[3] }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        <!-- Hot Games Section -->
+        <section class="hot-games">
+            <h2>Hot Games</h2>
+            <div class="games-slider" id="gamesContainer">
+                <div class="game"><img src="static/Asset/img/monopoly.webp" alt="Monopoly"></div>
+                <div class="game"><img src="static/Asset/img/andarbahar.webp" alt="Andarbahar"></div>
+                <div class="game"><img src="static/Asset/img/dragontiger.webp" alt="dragontiger"></div>
+            </div>
+        </section>
+
+        <!-- Popular Casino Section -->
+        <section class="popular-casino">
+            <h2>Popular Casino</h2>
+            <div class="games-slider">
+                <div class="game"><img src="static/Asset/img/aviator.webp" alt="Aviator"></div>
+                <div class="game"><img src="static/Asset/img/7up7down.webp" alt="7 Up 7 Down"></div>
+                <div class="game"><img src="static/Asset/img/evolution.webp" alt="evolution"></div>
+                <div class="game"><img src="static/Asset/img/funkytime.webp" alt="Funkytime"></div>
+            </div>
+        </section>
+
+        <!-- Favourite Games Section -->
+        <section class="favourite-games">
+            <h2>Favourite Games</h2>
+            <div class="games-slider">
+                <div class="game"><img src="static/Asset/img/jilli.webp" alt="JILI"></div>
+                <div class="game"><img src="static/Asset/img/crazytime.webp" alt="Crezy Time"></div>
+                <div class="game"><img src="static/Asset/img/supersicbo.webp" alt="Super Sicbo"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="payment-methods">
+            <h3>Payment Methods</h3>
+            <div class="payment-logos">
+                <img src="static/Asset/img/bkash.png" alt="bKash" class="payment-logo">
+                <img src="static/Asset/img/nogod.png" alt="Nogod" class="payment-logo">
+                <img src="static/Asset/img/rocket.png" alt="Rocket" class="payment-logo">
+                <img src="Asset/img/upai.png" alt="Upai" class="payment-logo">
+                <img src="static/Asset/img/bank.png" alt="Bank" class="payment-logo">
+            </div>
+        </div>
+        <div class="Responsible Gambling">
+            <h3>Responsible Gambling</h3>
+            <img src="static/Asset/img/gambling.png" alt="License" class="payment-logo">
+            <img src="static/Asset/img/18+.png" alt="18+" class="payment-logo">
+            <img src="static/Asset/img/hand.png" alt="Stop" class="payment-logo">
+        </div>
+        <div class="community-websites">
+            <h3>Community Websites</h3>
+            <img src="static/Asset/img/facebook.png" alt="Facebook" class="payment-logo">
+            <img src="static/Asset/img/twitter.png" alt="Twitter" class="payment-logo">
+            <img src="static/Asset/img/telegram.png" alt="Telegram" class="payment-logo">
+        </div>
+    </footer>
+
+    <script>
+        // Function to toggle the visibility of the mobile menu
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const desktopMenu = document.getElementById('desktopMenu');
+            menu.classList.toggle('active');  // Toggles visibility of the mobile menu
+            desktopMenu.classList.toggle('hide');  // Hides/shows the desktop menu
+        }
+    
+        // Function to load games based on the selected section (sports, casino, etc.)
+        function loadSection(section) {
+            const gamesContainer = document.getElementById('gamesContainer');
+            const sectionTitle = document.querySelector('.hot-games h2');
+    
+            // Dynamically change the section title
+            sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + ' Games';
+    
+            // Handle different game categories dynamically
+            if (section === 'sports') {
+                // Specific images for the "sports" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/cricket.png" alt="Cricket"></div>
+                    <div class="game"><img src="static/asset/img/football.png" alt="Football"></div>
+                    <div class="game"><img src="static/asset/img/basketball.png" alt="basketball"></div>
+                `;
+            } else if (section === 'hot') {
+                // Specific images for the "hot" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/aviator.webp" alt="Aviator"></div>
+                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"></div>
+                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"></div>
+                `;
+            } else if (section === 'casino') {
+                // Specific images for the "casino" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"></div>
+                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="Crazycoinflip"></div>
+                    <div class="game"><img src="static/asset/img/dragontiger.webp" alt="DragonTiger"></div>
+                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune-gems"></div>
+                    <div class="game"><img src="static/asset/img/moneycoming.webp" alt="Moneycoming"></div>
+                `;
+            } else if (section === 'slot') {
+                // Specific images for the "slot" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/monopoly.webp" alt="Monopoly"></div>
+                    <div class="game"><img src="static/asset/img/pp.webp" alt="Private Play"></div>
+                    <div class="game"><img src="static/asset/img/lightingroulette.webp" alt="Lightingroulette"></div>
+                `;
+            } else if (section === 'table') {
+                // Specific images for the "table" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/spade.png" alt="Spade"></div>
+                    <div class="game"><img src="static/asset/img/superace.webp" alt="Superace"></div>
+                    <div class="game"><img src="static/asset/img/supersicbo.webp" alt="Supersicbo"></div>
+                `;
+            } else if (section === 'fishing') {
+                // Specific images for the "fishing" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/jdb.png" alt="JDB"></div>
+                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune Gem"></div>
+                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"></div>
+                `;
+            } else if (section === 'arcade') {
+                // Specific images for the "arcade" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="CrazyCoinFlip"></div>
+                    <div class="game"><img src="static/asset/img/bonus-dice.webp" alt="Bonus Dice"></div>
+                    <div class="game"><img src="static/asset/img/mine swipper.webp" alt="Mine Swipper"></div>
+                `;
+            } else if (section === 'lottery') {
+                // Specific images for the "lottery" category
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/asset/img/americanroll.webp" alt="American Roll"></div>
+                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"></div>
+                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"></div>
+                `;
+            } else {
+                // Default behavior for when no category matches (optional)
+                gamesContainer.innerHTML = `
+                    <div class="game"><img src="static/game-images/default-game-1.jpg" alt="Default Game 1"></div>
+                    <div class="game"><img src="static/game-images/default-game-2.jpg" alt="Default Game 2"></div>
+                    <div class="game"><img src="static/game-images/default-game-3.jpg" alt="Default Game 3"></div>
+                `;
+            }
+        }
+        
+        // Connect to the WebSocket server
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        // Receive messages and display them in the activity div
+        socket.on('message', function(msg) {
+            var activityDiv = document.getElementById('activity');
+            var newMessage = document.createElement('p');
+            newMessage.textContent = msg;
+            activityDiv.appendChild(newMessage);
+        });
+
+        // Send a message when the button is clicked
+        document.getElementById('sendMessageBtn').onclick = function() {
+            var message = document.getElementById('messageInput').value;
+            socket.send(message);  // Send the message to the server
+            document.getElementById('messageInput').value = ''; // Clear the input
+        };
+    
+    </script>
+    
+</body>
+</html>

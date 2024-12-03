@@ -1,0 +1,408 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0dbe6b;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3f51b5;
+    color: white;
+    padding: 10px 20px;
+}
+
+/* Style for logo image */
+.logo-image {
+    width: 150px; /* Adjust the width as necessary */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.menu-icon {
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+    color: white;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.header-options {
+    display: flex;
+    gap: 15px;
+}
+
+.header-options .button {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.header-options .button:hover {
+    background-color: #e64a19;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: #333;
+    padding: 15px;
+    color: white;
+}
+
+.mobile-menu.active {
+    display: flex;
+}
+
+.mobile-menu ul {
+    list-style: none;
+}
+
+.mobile-menu li {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #444;
+    cursor: pointer;
+}
+
+.mobile-menu li img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Notice Bar */
+.notice-bar {
+    background-color: #0dbe6b;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Desktop Menu */
+.site-menu {
+    display: flex;
+    justify-content: space-around;
+    background-color: #3f51b5;
+    padding: 10px 0;
+    color: white;
+}
+
+.site-menu ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+}
+
+.site-menu li {
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.site-menu li:hover {
+    background-color: #5c6bc0;
+    border-radius: 4px;
+}
+
+/* Submenu Modern Sliding Bar */
+.submenu {
+    background: linear-gradient(90deg, #3f51b5, #5c6bc0); /* Gradient background */
+    padding: 10px 0;
+    overflow-x: auto; /* Makes it scrollable horizontally */
+    position: relative;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for modern look */
+    border-radius: 4px; /* Rounded corners */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Remove default list styling */
+.submenu ul {
+    display: flex;
+    list-style: none; /* Removes the default bullets */
+    gap: 20px; /* Space between items */
+    padding: 0 15px;
+    margin: 0;
+    align-items: center;
+}
+
+/* Each submenu item style */
+.submenu li {
+    color: white;
+    padding: 12px 18px;
+    border-radius: 20px; /* Rounded corners for items */
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Spacing between icon and text */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Hover effect */
+.submenu li:hover {
+    background-color: rgba(255, 255, 255, 0.4); /* Lighten background on hover */
+    transform: scale(1.05); /* Slightly bigger when hovered */
+}
+
+/* Styling for submenu icons */
+.submenu-icon {
+    width: 18px; /* Icon size */
+    height: 18px;
+    object-fit: contain; /* Ensure the icon maintains its aspect ratio */
+}
+
+/* Modern scrollbar */
+.submenu::-webkit-scrollbar {
+    height: 10px;
+    background-color: #0dbe6b;
+    border-radius: 10px;
+}
+
+.submenu::-webkit-scrollbar-track {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+}
+
+.submenu::-webkit-scrollbar-thumb {
+    background-color: #ff5722; /* Orange color for thumb */
+    border-radius: 10px;
+    border: 3px solid #0dbe6b;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect for the scrollbar thumb */
+.submenu::-webkit-scrollbar-thumb:hover {
+    background-color: #e64a19; /* Darker orange when hovered */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .submenu {
+        overflow-x: auto; /* Enable horizontal scrolling for mobile */
+        padding: 10px 0;
+    }
+
+    .submenu ul {
+        gap: 12px;
+    }
+
+    /* Adjust padding and font size on mobile */
+    .submenu li {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .submenu li:hover {
+        transform: scale(1.05); /* Slight hover scale for mobile */
+    }
+}
+
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+    .submenu {
+        overflow-x: auto; /* Enable horizontal scrolling for mobile */
+    }
+
+    .submenu ul {
+        gap: 15px;
+    }
+
+    /* Reduce padding and font size on mobile */
+    .submenu li {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .submenu li:hover {
+        transform: scale(1.05); /* Slight hover scale for mobile */
+    }
+}
+
+
+/* Games Slider Modern Look */
+.games-slider {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 15px 0;
+    position: relative;
+    background: linear-gradient(90deg, #0dbe6b, #0dbe6b);
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.games-slider::-webkit-scrollbar {
+    height: 10px;
+    background-color: #0dbe6b;
+    border-radius: 5px;
+}
+
+.games-slider::-webkit-scrollbar-track {
+    background-color: #0dbe6b;
+    border-radius: 5px;
+}
+
+.games-slider::-webkit-scrollbar-thumb {
+    background-color: #ff5722;
+    border-radius: 5px;
+    border: 3px solid #0dbe6b;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.games-slider::-webkit-scrollbar-thumb:hover {
+    background-color: #e64a19;
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+}
+
+.games-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.game img {
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+/* Hot Games Slider */
+.games-slider {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.games-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.games-slider::-webkit-scrollbar-thumb {
+    background: #ff5722;
+    border-radius: 4px;
+}
+
+/* Popular Casino Slider */
+.games-slider {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.games-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.games-slider::-webkit-scrollbar-thumb {
+    background: #ff5722;
+    border-radius: 4px;
+}
+
+/* Favourite Games Slider */
+.games-slider {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.games-slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.games-slider::-webkit-scrollbar-thumb {
+    background: #ff5722;
+    border-radius: 4px;
+}
+
+/* Footer */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #222;
+    color: white;
+    padding: 20px;
+}
+
+.footer h3 {
+    margin-bottom: 10px;
+    color: #ffcc00;
+}
+
+.footer p {
+    margin-top: 5px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .site-menu {
+        display: none;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+
+    .mobile-menu ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .mobile-menu li {
+        font-size: 16px;
+    }
+
+    .submenu ul {
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+
+    /* Submenu for mobile */
+    .submenu {
+        box-shadow: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .mobile-menu {
+        display: none;
+    }
+}

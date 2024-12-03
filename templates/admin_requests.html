@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - Pending Requests</title>
+</head>
+<body>
+    <h2>Pending Banking Requests</h2>
+    
+    {% if requests %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>User ID</th>
+                    <th>Request Type</th>
+                    <th>Amount</th>
+                    <th>Transaction ID</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                    <tr>
+                        <td>{{ request[0] }}</td>
+                        <td>{{ request[1] }}</td>
+                        <td>{{ request[4] }}</td>
+                        <td>{{ request[3] }}</td>
+                        <td>{{ request[5] }}</td>
+                        <td>{{ request[6] }}</td>
+                        <td>
+                            <a href="{{ url_for('approve_request', request_id=request[0]) }}">Approve</a>
+                            <a href="#" data-toggle="modal" data-target="#rejectModal{{ request[0] }}">Reject</a>
+
+                            <!-- Reject Modal -->
+                            <div class="modal" id="rejectModal{{ request[0] }}">
+                                <form method="POST" action="{{ url_for('reject_request', request_id=request[0]) }}">
+                                    <label for="reason">Reason for Rejection:</label>
+                                    <input type="text" name="reason" required>
+                                    <button type="submit">Reject</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No pending requests.</p>
+    {% endif %}
+</body>
+</html>
