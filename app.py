@@ -5,7 +5,7 @@ import hashlib
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Change this to something unique
 
-DB_PATH = "db/system.db"
+DB_PATH = "db/db/system.db"
 
 # Helper function to check if the user is an admin
 def is_admin(user_id):
