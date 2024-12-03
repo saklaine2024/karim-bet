@@ -14,9 +14,9 @@ def is_admin(user_id):
     cursor.execute("SELECT is_admin FROM users WHERE id = ?", (user_id,))
     user = cursor.fetchone()
     connection.close()
-    return user[0] == 1  # Assuming is_admin is a field in users table (1 = admin, 0 = normal user)
+    return user[0] == 1 if user else False
 
-# Helper function to get balance (used for withdrawal)
+# Helper function to get balance
 def get_balance(user_id):
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
@@ -35,17 +35,27 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
+        if not username or not password:
+            flash("Username or password cannot be empty!", "error")
+            return render_template('signup.html')
+
         hashed_password = hash_password(password)
 
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)", 
-                       (username, hashed_password, 0))  # 0 is normal user, 1 would be for admin
-        connection.commit()
-        connection.close()
+        try:
+            connection = sqlite3.connect(DB_PATH)
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO users (username, password, is_admin) VALUES (?, ?, ?)", 
+                           (username, hashed_password, 0))
+            connection.commit()
+            connection.close()
 
-        flash("User created successfully!", "success")
-        return redirect(url_for('signin'))
+            flash("User created successfully!", "success")
+            return redirect(url_for('signin'))
+        except sqlite3.IntegrityError:
+            flash("Username already exists!", "error")
+        except Exception as e:
+            flash(f"An error occurred: {e}", "error")
     return render_template('signup.html')
 
 # Route to sign in
@@ -65,7 +75,7 @@ def signin():
         if user:
             session['user_id'] = user[0]  # Store user ID in session
             flash("Signed in successfully!", "success")
-            return redirect(url_for('banking'))  # Redirect to banking page after successful login
+            return redirect(url_for('banking'))  # Redirect to banking page
         else:
             flash("Invalid username or password", "error")
     return render_template('signin.html')
@@ -80,7 +90,7 @@ def banking():
     balance = get_balance(user_id)
     return render_template('banking.html', balance=balance)
 
-# Route to display pending requests (Admin view)
+# Route for admin to view pending requests
 @app.route('/admin/requests')
 def admin_requests():
     if 'user_id' in session and is_admin(session['user_id']):
@@ -93,7 +103,7 @@ def admin_requests():
     else:
         return redirect(url_for('index'))
 
-# Route to approve requests (Admin action)
+# Route to approve requests
 @app.route('/admin/approve_request/<int:request_id>')
 def approve_request(request_id):
     if 'user_id' in session and is_admin(session['user_id']):
@@ -108,10 +118,10 @@ def approve_request(request_id):
             request_type = request[4]
 
             if request_type == 'deposit':
-                record_transaction(user_id, amount, 'deposit')  # Add to balance
+                record_transaction(user_id, amount, 'deposit')
             elif request_type == 'withdrawal':
                 if get_balance(user_id) >= amount:
-                    record_transaction(user_id, -amount, 'withdrawal')  # Deduct from balance
+                    record_transaction(user_id, -amount, 'withdrawal')
                 else:
                     flash("Insufficient funds for withdrawal request.", "error")
                     return redirect(url_for('admin_requests'))
@@ -135,9 +145,9 @@ def record_transaction(user_id, amount, trans_type):
 # Route for homepage
 @app.route('/')
 def index():
-    return render_template('index.html')  # Ensure 'index.html' exists in the 'templates' folder
+    return render_template('index.html')  # Ensure 'index.html' exists in the templates folder
 
-# Route for agent registration (Admin action)
+# Route for admin to register an agent
 @app.route('/admin/register_agent', methods=['GET', 'POST'])
 def register_agent():
     if 'user_id' in session and is_admin(session['user_id']):
@@ -147,11 +157,10 @@ def register_agent():
             password = request.form['password']
             hashed_password = hash_password(password)
             
-            # Insert agent into database
             connection = sqlite3.connect(DB_PATH)
             cursor = connection.cursor()
             cursor.execute("INSERT INTO users (username, email, password, is_admin) VALUES (?, ?, ?, ?)", 
-                           (name, email, hashed_password, 1))  # 1 for admin role (agent)
+                           (name, email, hashed_password, 1))
             connection.commit()
             connection.close()
             flash("Agent registered successfully", "success")
@@ -161,12 +170,12 @@ def register_agent():
     else:
         return redirect(url_for('index'))
 
-# Route for logout
+# Route to log out
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)  # Remove the user from session
+    session.pop('user_id', None)
     flash("You have been logged out.", "success")
-    return redirect(url_for('index'))  # Redirect to homepage after logout
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
