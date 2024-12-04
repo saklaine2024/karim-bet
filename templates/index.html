@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karim Bet</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
     <!-- Optionally, you can add FontAwesome for icons -->
 </head>
@@ -103,11 +103,15 @@
     <main class="main-content" id="mainContent">
 
         {% if 'user_id' in session %}
+        {% if balance != 0 %}
+        <!-- Display balance when requested -->
         <div class="balance-toggle">
             <button id="toggleBalanceBtn" class="button">Tap to See Balance</button>
-            <div id="balanceBox" class="balance-box">
+            <strong>Your Balance: </strong>{{ balance }}
+            <div id="toggleBalanceBtn" class="balance-toggle">
             </div>
         </div>
+    {% endif %}
     {% endif %}
 
         <!-- Hot Games Section -->
@@ -174,6 +178,18 @@
         balanceBox.style.display = (balanceBox.style.display === 'block') ? 'none' : 'block';
     });
     
+    <!-- Show balance for 30 seconds -->
+            // Handle Balance Toggle
+        document.getElementById('toggleBalanceBtn').addEventListener('click', function() {
+            const balanceDisplay = document.getElementById('balanceDisplay');
+            balanceDisplay.style.display = (balanceDisplay.style.display === 'block') ? 'none' : 'block';
+
+            // Automatically hide the balance after 30 seconds
+            setTimeout(function() {
+                balanceDisplay.style.display = '0';
+            }, 30000);  // 30 seconds
+        });
+
         // Function to toggle the visibility of the mobile menu
         function toggleMenu() {
             const menu = document.getElementById('mobileMenu');
