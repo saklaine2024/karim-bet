@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sqlite3
 import bcrypt
+import os
 
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'your_secret_key'
 
-DB_PATH = "db/db/system.db"
+DB_PATH = os.path.join(os.getcwd(), "db", "system.db")
 
 # Helper function to connect to the database
 def connect_db():
@@ -130,7 +131,7 @@ def dashboard():
     elif role == 'super_agent':
         return redirect(url_for('super_agent_dashboard'))
     elif role == 'user_agent':
-        return redirect(url_for('user_dashboard'))
+        return redirect(url_for('user_agent_dashboard'))  # Corrected
     else:
         flash("Access denied.", "error")
         return redirect(url_for('signin'))
@@ -183,6 +184,15 @@ def master_dashboard():
         connection.close()
         return render_template('master_dashboard.html', agents=agents)
     flash("Access denied! Only Master Agents can view this page.", "error")
+    return redirect(url_for('signin'))
+
+# Route for User Agent's Dashboard
+@app.route('/user_agent_dashboard')
+def user_agent_dashboard():
+    if 'user_id' in session and session.get('role') == 'user_agent':
+        # Fetch user-specific data here if needed
+        return render_template('user_agent_dashboard.html')  # Render the user dashboard template
+    flash("Access denied! Only User Agents can view this page.", "error")
     return redirect(url_for('signin'))
 
 # Route for banking page
