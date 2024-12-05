@@ -16,7 +16,7 @@ def connect_db():
 def get_user_roles(user_id):
     connection = connect_db()
     cursor = connection.cursor()
-    cursor.execute("SELECT is_admin, is_master_agent, is_super_agent, is_user_agent FROM users WHERE id = ?", (user_id,))
+    cursor.execute("SELECT is_admin, is_master_agent, is_super_agent, is_user_agent, is_blocked FROM users WHERE id = ?", (user_id,))
     user = cursor.fetchone()
     connection.close()
     if user:
@@ -25,6 +25,7 @@ def get_user_roles(user_id):
             "is_master_agent": user[1],
             "is_super_agent": user[2],
             "is_user_agent": user[3],
+            "is_blocked": user[4]
         }
     return {}
 
@@ -36,28 +37,50 @@ def hash_password(password):
 
 # Helper function to check passwords
 def check_password(stored_password, provided_password):
+    if isinstance(stored_password, str):
+        stored_password = stored_password.encode('utf-8')
     return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password)
 
-# Helper function to get balance
-def get_balance(user_id):
+# Helper function to get balance and live monitoring details
+def get_user_details(user_id):
     connection = connect_db()
     cursor = connection.cursor()
+
     cursor.execute("SELECT SUM(amount) FROM balance_history WHERE user_id = ?", (user_id,))
-    balance = cursor.fetchone()[0]
+    balance = cursor.fetchone()[0] or 0
+
+    cursor.execute("SELECT SUM(amount) FROM balance_history WHERE user_id = ? AND amount < 0", (user_id,))
+    exposure = cursor.fetchone()[0] or 0
+
+    cursor.execute("SELECT * FROM balance_history WHERE user_id = ?", (user_id,))
+    live_activity = cursor.fetchall()
+
     connection.close()
-    return balance if balance else 0
+    return balance, exposure, live_activity
 
 # Route for homepage
 @app.route('/')
 def index():
+    if 'user_id' in session:
+        role = session.get('role')
+        if role == 'admin':
+            return redirect(url_for('admin_panel'))
+        elif role == 'master_agent':
+            return redirect(url_for('master_dashboard'))
+        elif role == 'super_agent':
+            return redirect(url_for('super_agent_dashboard'))
+        elif role == 'user':
+            return redirect(url_for('index'))
+
     return render_template('index.html')
 
-# Route to sign up
+# Route to sign up (with referral code)
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        referral_code = request.form.get('referral_code')
 
         if not username or not password:
             flash("Username or password cannot be empty!", "error")
@@ -65,12 +88,25 @@ def signup():
 
         hashed_password = hash_password(password)
 
+        referred_by = None
+        if referral_code:
+            connection = connect_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT id FROM users WHERE referral_code = ?", (referral_code,))
+            referred_by = cursor.fetchone()
+            connection.close()
+
+            if not referred_by:
+                flash("Invalid referral code.", "error")
+                return render_template('signup.html')
+            referred_by = referred_by[0]  # Set the referring agent's ID
+
         try:
             connection = connect_db()
             cursor = connection.cursor()
             cursor.execute(
-                "INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent) VALUES (?, ?, ?, ?, ?, ?)",
-                (username, hashed_password, 0, 0, 0, 1)  # Default as User Agent
+                "INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent, referred_by) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (username, hashed_password, 0, 0, 0, 1, referred_by)  # Default as User
             )
             connection.commit()
             connection.close()
@@ -100,23 +136,16 @@ def signin():
                 'admin' if user[3] else
                 'master_agent' if user[4] else
                 'super_agent' if user[5] else
-                'user_agent'
+                'user'
             )
+            session['is_blocked'] = user[6]
             flash(f"Signed in as {session['role'].replace('_', ' ').capitalize()}!", "success")
             return redirect(url_for('dashboard'))
 
         flash("Invalid username or password", "error")
     return render_template('signin.html')
 
-# Route to log out
-@app.route('/logout')
-def logout():
-    session.pop('user_id', None)
-    session.pop('role', None)
-    flash("You have been logged out.", "success")
-    return redirect(url_for('index'))
-
-# Role-based dashboard redirection
+# Route for dashboard (redirect based on role)
 @app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
@@ -130,13 +159,21 @@ def dashboard():
         return redirect(url_for('master_dashboard'))
     elif role == 'super_agent':
         return redirect(url_for('super_agent_dashboard'))
-    elif role == 'user_agent':
-        return redirect(url_for('user_agent_dashboard'))  # Corrected
+    elif role == 'user':
+        return redirect(url_for('index'))
     else:
         flash("Access denied.", "error")
         return redirect(url_for('signin'))
 
-# Route for admin panel
+# Logout route
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)  # Remove user_id from session
+    session.pop('role', None)  # Remove role from session
+    flash("You have been logged out.", "success")
+    return redirect(url_for('index'))  # Redirect to the index page after logout
+
+# Admin panel route
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_panel():
     if 'user_id' not in session or session.get('role') != 'admin':
@@ -146,6 +183,22 @@ def admin_panel():
     connection = connect_db()
     cursor = connection.cursor()
 
+    search_query = request.args.get('search', '')  # Get search query
+    if search_query:
+        cursor.execute("SELECT * FROM users WHERE username LIKE ?", ('%' + search_query + '%',))
+    else:
+        cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+
+    cursor.execute("SELECT SUM(amount) FROM balance_history")
+    total_balance = cursor.fetchone()[0] or 0
+
+    cursor.execute("SELECT SUM(amount) FROM balance_history WHERE amount < 0")
+    total_exposure = cursor.fetchone()[0] or 0
+
+    connection.close()
+
+    # Handle form submission for creating a user
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -153,6 +206,7 @@ def admin_panel():
 
         hashed_password = hash_password(password)
 
+        # Role assignment based on selected role
         is_master_agent = 1 if role == "master_agent" else 0
         is_super_agent = 1 if role == "super_agent" else 0
         is_user_agent = 1 if role == "user_agent" else 0
@@ -167,79 +221,86 @@ def admin_panel():
         except sqlite3.IntegrityError:
             flash("Username already exists!", "error")
 
-    cursor.execute("SELECT id, username, is_admin, is_master_agent, is_super_agent, is_user_agent FROM users")
-    users = cursor.fetchall()
-    connection.close()
+    return render_template('admin_panel.html', users=users, total_balance=total_balance, total_exposure=total_exposure)
 
-    return render_template('admin_panel.html', users=users)
-
-# Route for Master Agent's Dashboard
-@app.route('/master_dashboard')
-def master_dashboard():
-    if 'user_id' in session and session.get('role') == 'master_agent':
-        connection = connect_db()
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE is_master_agent = 0")  # Fetch all non-master agents
-        agents = cursor.fetchall()
-        connection.close()
-        return render_template('master_dashboard.html', agents=agents)
-    flash("Access denied! Only Master Agents can view this page.", "error")
-    return redirect(url_for('signin'))
-
-# Route for User Agent's Dashboard
-@app.route('/user_agent_dashboard')
-def user_agent_dashboard():
-    if 'user_id' in session and session.get('role') == 'user_agent':
-        # Fetch user-specific data here if needed
-        return render_template('user_agent_dashboard.html')  # Render the user dashboard template
-    flash("Access denied! Only User Agents can view this page.", "error")
-    return redirect(url_for('signin'))
-
-# Route for banking page
-@app.route('/banking', methods=['GET', 'POST'])
-def banking():
-    if 'user_id' not in session:
+# Admin approval/rejection of deposit/withdrawal
+@app.route('/admin/approve_transaction/<int:transaction_id>/<action>', methods=['GET', 'POST'])
+def approve_transaction(transaction_id, action):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        flash("Access denied. Admins only!", "error")
         return redirect(url_for('signin'))
 
-    user_id = session['user_id']
-    balance = get_balance(user_id)
+    connection = connect_db()
+    cursor = connection.cursor()
 
-    if request.method == 'POST' and 'view_balance' in request.form:
-        balance = get_balance(user_id)
+    cursor.execute("SELECT * FROM balance_history WHERE id = ?", (transaction_id,))
+    transaction = cursor.fetchone()
 
-    return render_template('banking.html', balance=balance)
+    if transaction:
+        if action == 'approve':
+            cursor.execute("UPDATE balance_history SET status = 'approved' WHERE id = ?", (transaction_id,))
+            connection.commit()
+            flash("Transaction approved successfully.", "success")
+        elif action == 'reject':
+            cursor.execute("UPDATE balance_history SET status = 'rejected' WHERE id = ?", (transaction_id,))
+            connection.commit()
+            flash("Transaction rejected.", "error")
 
-# Route to approve banking requests (Master Agents only)
-@app.route('/admin/approve_request/<int:request_id>')
-def approve_request(request_id):
-    if 'user_id' in session and session.get('role') == 'master_agent':
+    connection.close()
+    return redirect(url_for('admin_panel'))
+
+# Block/Unblock users (Admin and agents)
+@app.route('/admin/block_user/<int:user_id>/<action>', methods=['GET', 'POST'])
+def block_user(user_id, action):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        flash("Access denied. Admins only!", "error")
+        return redirect(url_for('signin'))
+
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    if action == 'block':
+        cursor.execute("UPDATE users SET is_blocked = 1 WHERE id = ?", (user_id,))
+        flash("User has been blocked.", "success")
+    elif action == 'unblock':
+        cursor.execute("UPDATE users SET is_blocked = 0 WHERE id = ?", (user_id,))
+        flash("User has been unblocked.", "success")
+
+    connection.commit()
+    connection.close()
+    return redirect(url_for('admin_panel'))
+
+# Admin settings route (password change)
+@app.route('/admin/settings', methods=['GET', 'POST'])
+def admin_settings():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        flash("Access denied. Admins only!", "error")
+        return redirect(url_for('signin'))
+
+    if request.method == 'POST':
+        current_password = request.form['current_password']
+        new_password = request.form['new_password']
+
         connection = connect_db()
         cursor = connection.cursor()
-        cursor.execute("SELECT * FROM banking_requests WHERE id = ?", (request_id,))
-        request = cursor.fetchone()
-
-        if request:
-            user_id = request[1]
-            amount = request[3]
-            request_type = request[4]
-
-            if request_type == 'deposit':
-                record_transaction(user_id, amount, 'deposit')
-            elif request_type == 'withdrawal':
-                if get_balance(user_id) >= amount:
-                    record_transaction(user_id, -amount, 'withdrawal')
-                else:
-                    flash("Insufficient funds for withdrawal request.", "error")
-                    return redirect(url_for('admin_panel'))
-
-            cursor.execute("UPDATE banking_requests SET status = 'approved' WHERE id = ?", (request_id,))
-            connection.commit()
-
+        cursor.execute("SELECT * FROM users WHERE id = ?", (session['user_id'],))
+        user = cursor.fetchone()
         connection.close()
-        flash("Request approved successfully!", "success")
-        return redirect(url_for('admin_panel'))
-    flash("You are not authorized to approve requests.", "error")
-    return redirect(url_for('signin'))
+
+        if user and check_password(user[2], current_password):  # Check if current password is correct
+            hashed_password = hash_password(new_password)
+
+            connection = connect_db()
+            cursor = connection.cursor()
+            cursor.execute("UPDATE users SET password = ? WHERE id = ?", (hashed_password, session['user_id']))
+            connection.commit()
+            connection.close()
+
+            flash("Password changed successfully!", "success")
+        else:
+            flash("Incorrect current password", "error")
+
+    return render_template('admin_settings.html')
 
 # Helper function to record a transaction
 def record_transaction(user_id, amount, trans_type):

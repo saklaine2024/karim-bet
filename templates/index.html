@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karim Bet</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Link to Google Fonts (Siyam Rupali for Bengali) -->
+    <link href="https://fonts.googleapis.com/css2?family=Siyam+Rupali&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
-    <!-- Optionally, you can add FontAwesome for icons -->
+    
+    
 </head>
 <body>
     <!-- Header -->
@@ -19,11 +23,12 @@
         <div class="header-options">
           <div class="header-options">
         {% if 'user_id' not in session %}
-            <a href="{{ url_for('signin') }}" class="button">Sign In</a>
-            <a href="{{ url_for('signup') }}" class="button">Sign Up</a>
+            <a href="{{ url_for('signin') }}"> <i class="fas fa-sign-in-alt"></i><span class="button-text">IN</span></a> <!-- Sign In icon -->                
+            <a href="{{ url_for('signup') }}"> <i class="fas fa-user-plus"></i><span class="button-text">UP</span></a> <!-- Sign Up icon -->
         {% else %}
-            <a href="{{ url_for('banking') }}" class="button">Banking</a>
-            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+            <p class="welcome">Welcome back, {{ username }}!</p>
+            <a href="{{ url_for('banking') }}"><i class="fas fa-wallet"></i><span class="button-text">Bank</span></a> <!-- Banking -->
+            <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i><span class="button-text">Exit</span></a> <!-- Logout -->
         {% endif %}
     </div>
        
@@ -32,7 +37,7 @@
     <!-- Mobile Menu -->
     <nav class="mobile-menu" id="mobileMenu">
         <ul>
-            <li><i class="fas fa-home"></i> Home</li>
+            <li><a href="{{ url_for('index') }}"></a><i class="fas fa-home"></i> Home</li>
             <li><i class="fas fa-futbol"></i> Sports</li>
             <li><i class="fas fa-casino"></i> Casino</li>
             <li><i class="fas fa-gamepad"></i> Slot</li>
@@ -49,7 +54,7 @@
 
     <!-- Notice Bar -->
     <div class="notice-bar">
-        <marquee behavior="scroll" direction="left">If you need this type of panel you can contact us. Thanks.</marquee>
+        <marquee behavior="scroll" direction="left">এটি একটি ডেমো মাত্র। এখানে গেম এড করা নাই। সাইট তৈরি করতে বললে আমরা ৫ দিনের মধ্যে গেম এ্যাড করে দিব। প্রয়োজনে আমাদের সাথে যোগাযোগ করুন।</marquee>
     </div>
 
     <!-- Desktop Menu -->
@@ -121,6 +126,7 @@
         <section class="hot-games">
             <h2>Hot Games</h2>
             <div class="games-slider" id="gamesContainer">
+                <div class="game"><img src="static/Asset/img/cricket.png" alt="Cricket"> <div class="game-name">Cricket</div></div>
                 <div class="game"><img src="static/Asset/img/monopoly.webp" alt="Monopoly"> <div class="game-name">Monopoly</div></div>
                 <div class="game"><img src="static/Asset/img/andarbahar.webp" alt="Andarbahar"> <div class="game-name">Andarbahar</div></div>
                 <div class="game"><img src="static/Asset/img/dragontiger.webp" alt="dragontiger"> <div class="game-name">DragonTiger</div></div>
@@ -232,60 +238,60 @@
             if (section === 'sports') {
                 // Specific images for the "sports" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/cricket.png" alt="Cricket"> <div class="game-name">Cricket</div></div>
-                    <div class="game"><img src="static/asset/img/football.png" alt="Football"> <div class="game-name">Football</div></div>
-                    <div class="game"><img src="static/asset/img/basketball.png" alt="basketball"> <div class="game-name">Basketball</div></div>
+                    <div class="game"><img src="static/Asset/img/cricket.png" alt="Cricket"> <div class="game-name">Cricket</div></div>
+                    <div class="game"><img src="static/Asset/img/football.png" alt="Football"> <div class="game-name">Football</div></div>
+                    <div class="game"><img src="static/Asset/img/basketball.png" alt="basketball"> <div class="game-name">Basketball</div></div>
                 `;
             } else if (section === 'hot') {
                 // Specific images for the "hot" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/aviator.webp" alt="Aviator"> <div class="game-name">Aviator</div></div>
-                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
-                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
+                    <div class="game"><img src="static/Asset/img/aviator.webp" alt="Aviator"> <div class="game-name">Aviator</div></div>
+                    <div class="game"><img src="static/Asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
+                    <div class="game"><img src="static/Asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
                 `;
             } else if (section === 'casino') {
                 // Specific images for the "casino" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
-                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="Crazycoinflip"> <div class="game-name">CoinFlip</div></div>
-                    <div class="game"><img src="static/asset/img/dragontiger.webp" alt="DragonTiger"> <div class="game-name">DragonTiger</div></div>
-                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune-gems"> <div class="game-name">Fortune</div></div>
-                    <div class="game"><img src="static/asset/img/moneycoming.webp" alt="Moneycoming"> <div class="game-name">MoneyComing</div></div>
+                    <div class="game"><img src="static/Asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
+                    <div class="game"><img src="static/Asset/img/crazycoinflip.webp" alt="Crazycoinflip"> <div class="game-name">CoinFlip</div></div>
+                    <div class="game"><img src="static/Asset/img/dragontiger.webp" alt="DragonTiger"> <div class="game-name">DragonTiger</div></div>
+                    <div class="game"><img src="static/Asset/img/fortune-gems.webp" alt="Fortune-gems"> <div class="game-name">Fortune</div></div>
+                    <div class="game"><img src="static/Asset/img/moneycoming.webp" alt="Moneycoming"> <div class="game-name">MoneyComing</div></div>
                 `;
             } else if (section === 'slot') {
                 // Specific images for the "slot" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/monopoly.webp" alt="Monopoly"> <div class="game-name">Monopoly</div></div>
-                    <div class="game"><img src="static/asset/img/pp.webp" alt="Private Play"> <div class="game-name">Private Play</div></div>
-                    <div class="game"><img src="static/asset/img/lightingroulette.webp" alt="Lightingroulette"> <div class="game-name">Lightingroulette</div></div>
+                    <div class="game"><img src="static/Asset/img/monopoly.webp" alt="Monopoly"> <div class="game-name">Monopoly</div></div>
+                    <div class="game"><img src="static/Asset/img/pp.webp" alt="Private Play"> <div class="game-name">Private Play</div></div>
+                    <div class="game"><img src="static/Asset/img/lightingroulette.webp" alt="Lightingroulette"> <div class="game-name">Lightingroulette</div></div>
                 `;
             } else if (section === 'table') {
                 // Specific images for the "table" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/spade.png" alt="Spade"> <div class="game-name">Spade</div></div>
-                    <div class="game"><img src="static/asset/img/superace.webp" alt="Superace"> <div class="game-name">Superace</div></div>
-                    <div class="game"><img src="static/asset/img/supersicbo.webp" alt="Supersicbo"> <div class="game-name">Supersicbo</div></div>
+                    <div class="game"><img src="static/Asset/img/spade.png" alt="Spade"> <div class="game-name">Spade</div></div>
+                    <div class="game"><img src="static/Asset/img/superace.webp" alt="Superace"> <div class="game-name">Superace</div></div>
+                    <div class="game"><img src="static/Asset/img/supersicbo.webp" alt="Supersicbo"> <div class="game-name">Supersicbo</div></div>
                 `;
             } else if (section === 'fishing') {
                 // Specific images for the "fishing" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/jdb.png" alt="JDB"> <div class="game-name">JDB</div></div>
-                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune Gem"> <div class="game-name">Fortune Gem</div></div>
-                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
+                    <div class="game"><img src="static/Asset/img/jdb.png" alt="JDB"> <div class="game-name">JDB</div></div>
+                    <div class="game"><img src="static/Asset/img/fortune-gems.webp" alt="Fortune Gem"> <div class="game-name">Fortune Gem</div></div>
+                    <div class="game"><img src="static/Asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
                 `;
             } else if (section === 'arcade') {
                 // Specific images for the "arcade" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="CrazyCoinFlip"> <div class="game-name">CrazyCoin</div></div>
-                    <div class="game"><img src="static/asset/img/bonus-dice.webp" alt="Bonus Dice"> <div class="game-name">Bonus Dice</div></div>
-                    <div class="game"><img src="static/asset/img/mine swipper.webp" alt="Mine Swipper"> <div class="game-name">Mine Swipper</div></div>
+                    <div class="game"><img src="static/Asset/img/crazycoinflip.webp" alt="CrazyCoinFlip"> <div class="game-name">CrazyCoin</div></div>
+                    <div class="game"><img src="static/Asset/img/bonus-dice.webp" alt="Bonus Dice"> <div class="game-name">Bonus Dice</div></div>
+                    <div class="game"><img src="static/Asset/img/mine swipper.webp" alt="Mine Swipper"> <div class="game-name">Mine Swipper</div></div>
                 `;
             } else if (section === 'lottery') {
                 // Specific images for the "lottery" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/americanroll.webp" alt="American Roll"> <div class="game-name">American Roll</div></div>
-                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
-                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
+                    <div class="game"><img src="static/Asset/img/americanroll.webp" alt="American Roll"> <div class="game-name">American Roll</div></div>
+                    <div class="game"><img src="static/Asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
+                    <div class="game"><img src="static/Asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
                 `;
             } else {
                 // Default behavior for when no category matches (optional)

@@ -3,289 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking Page</title>
+    <title>Banking</title>
     <style>
-        /* Reset some default styles */
+        /* General styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             color: #333;
             line-height: 1.6;
         }
-
         header {
             background-color: #007bff;
-            color: #fff;
-            padding: 20px 0;
+            color: white;
+            padding: 20px 10px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        .logo {
-            display: inline-block;
-            padding: 10px;
-        }
-
-        .logo img {
-            max-width: 150px;
-            height: auto;
-        }
-
-        .header-options {
-            margin-top: 15px;
-        }
-
         .header-options a {
-            margin: 0 15px;
             color: #fff;
-            font-size: 1.1rem;
             text-decoration: none;
-            background-color: #28a745;
+            font-size: 1rem;
+            margin: 0 10px;
             padding: 10px 20px;
+            background-color: #28a745;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
-
         .header-options a:hover {
             background-color: #218838;
         }
-
         main {
             max-width: 1200px;
-            margin: 30px auto;
+            margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-
         h1 {
             text-align: center;
-            color: #333;
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 20px;
         }
-
+        section {
+            margin-bottom: 30px;
+        }
         h2 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
             color: #333;
             border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
         }
-
-        form {
-            margin-top: 30px;
-        }
-
         label {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            color: #333;
             display: block;
-        }
-
-        select, input[type="number"], input[type="text"], button {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+            margin-bottom: 5px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            color: #555;
         }
-
-        select:focus, input[type="number"]:focus, input[type="text"]:focus, button:focus {
-            outline: none;
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        input:focus, select:focus {
             border-color: #007bff;
-            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
         }
-
-        select, input[type="number"], input[type="text"] {
-            background-color: #f9f9f9;
-        }
-
         button {
             background-color: #007bff;
-            color: #fff;
-            font-size: 1.1rem;
-            cursor: pointer;
+            color: white;
             border: none;
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+            cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
         }
-
         button:hover {
             background-color: #0056b3;
             transform: translateY(-2px);
         }
-
-        button:active {
-            transform: translateY(2px);
-        }
-
-        .amount-options {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        .amount-option {
-            background-color: #f1f1f1;
-            padding: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .amount-option:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        /* Flash message styles */
         .flash-messages {
+            margin: 20px 0;
             list-style: none;
             padding: 0;
-            margin: 20px 0;
         }
-
+        .flash {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
         .flash.success {
-            background-color: #4CAF50; /* Green */
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
+            background-color: #d4edda;
+            color: #155724;
         }
-
         .flash.error {
-            background-color: #f44336; /* Red */
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-        }
-
-        .flash i {
-            margin-right: 10px;
-            font-size: 1.5rem;
-        }
-
-        .form-message {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #28a745;
-            margin-top: 20px;
-            display: none;
-        }
-
-        .form-message.show {
-            display: block;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            background-color: #f8d7da;
+            color: #721c24;
         }
     </style>
 </head>
 <body>
-
     <header>
-        <div class="logo">
-            <div class="header-options"><img src="static/Asset/img/logo1.png" alt="Karim Bet Logo"></div>
-        </div>
+        <h1>Banking</h1>
         <div class="header-options">
-            <a href="{{ url_for('index') }}" class="button">Home</a>
-            <a href="{{ url_for('logout') }}" class="button">Logout</a>
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
     </header>
-
     <main>
-        <h1>Banking</h1>
-
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <div class="flash-messages">
+                <ul class="flash-messages">
                     {% for category, message in messages %}
-                        <div class="flash {{ category }}">
-                            <i class="fa {% if category == 'success' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
-                            {{ message }}
-                        </div>
+                        <li class="flash {{ category }}">{{ message }}</li>
                     {% endfor %}
-                </div>
+                </ul>
             {% endif %}
         {% endwith %}
 
-        <section class="deposit">
+        <section>
             <h2>Deposit</h2>
-            <form action="/banking" method="POST" class="deposit-form">
+            <form method="POST" action="/banking">
                 <input type="hidden" name="action" value="deposit">
-                <label for="method">Select Deposit Method</label>
-                <select name="method" required>
-                    <option value="bkash">bKash</option>
-                    <option value="rocket">Rocket</option>
-                    <option value="upai">Upai</option>
+                <label for="deposit-method">Deposit Method</label>
+                <select name="method" id="deposit-method" required>
+                    <option value="bkash">bKash Agent</option>
+                    <option value="rocket">Rocket Agent</option>
+                    <option value="upai">Upai Agent</option>
                 </select>
-                <label for="amount">Amount</label>
-                <div class="amount-options">
-                    <div class="amount-option">
-                        <input type="radio" name="amount" value="200" id="amount-200" required>
-                        <label for="amount-200">200</label>
-                    </div>
-                    <div class="amount-option">
-                        <input type="radio" name="amount" value="500" id="amount-500" required>
-                        <label for="amount-500">500</label>
-                    </div>
-                    <div class="amount-option">
-                        <input type="radio" name="amount" value="1000" id="amount-1000" required>
-                        <label for="amount-1000">1000</label>
-                    </div>
-                </div>
-                <label for="transaction_id">Transaction ID</label>
-                <input type="text" name="transaction_id" required placeholder="Enter Transaction ID">
-                <button type="submit">Submit Deposit</button>
+                <label for="deposit-amount">Amount</label>
+                <input type="number" name="amount" id="deposit-amount" required placeholder="Enter amount">
+                <label for="deposit-transaction">Transaction ID</label>
+                <input type="text" name="transaction_id" id="deposit-transaction" required placeholder="Transaction ID">
+                <button type="submit">Deposit</button>
             </form>
         </section>
 
-        <section class="withdraw">
+        <section>
             <h2>Withdraw</h2>
-            <form action="/banking" method="POST" class="withdraw-form">
+            <form method="POST" action="/banking">
                 <input type="hidden" name="action" value="withdraw">
-                <label for="method">Select Withdraw Method</label>
-                <select name="method" required>
+                <label for="withdraw-method">Withdraw Method</label>
+                <select name="method" id="withdraw-method" required>
                     <option value="bkash">bKash</option>
                     <option value="rocket">Rocket</option>
                     <option value="upai">Upai</option>
                 </select>
-                <label for="amount">Amount</label>
-                <input type="number" name="amount" required placeholder="Enter Amount">
-                <label for="phone_number">Phone Number</label>
-                <input type="text" name="phone_number" required placeholder="Enter Phone Number">
-                <button type="submit">Submit Withdraw</button>
+                <label for="withdraw-amount">Amount</label>
+                <input type="number" name="amount" id="withdraw-amount" required placeholder="Enter amount">
+                <label for="withdraw-phone">Phone Number</label>
+                <input type="text" name="phone_number" id="withdraw-phone" required placeholder="Phone number">
+                <button type="submit">Withdraw</button>
             </form>
         </section>
-
-        <p class="form-message {% if message %}show{% endif %}">
-            {% if message %}
-                {{ message }}
-            {% endif %}
-        </p>
     </main>
-
 </body>
 </html>

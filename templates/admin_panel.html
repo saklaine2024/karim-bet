@@ -4,43 +4,274 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-options {
+            margin-top: 15px;
+        }
+
+        .header-options a {
+            margin: 0 15px;
+            color: #fff;
+            font-size: 1rem;
+            text-decoration: none;
+            background-color: #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-options a:hover {
+            background-color: #218838;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        form {
+            margin-top: 30px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        .flash {
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .search-container input {
+            padding: 10px;
+            width: 60%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 50px;
+        }
+
+        .flash-messages {
+            margin: 20px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
 </head>
 <body>
-    <h1>Admin Panel</h1>
-    <h2>Create User</h2>
-    <form method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <label for="role">Role:</label>
-        <select id="role" name="role" required>
-            <option value="master_agent">Master Agent</option>
-            <option value="super_agent">Super Agent</option>
-            <option value="user_agent">User Agent</option>
-        </select><br>
-        <button type="submit">Create</button>
-    </form>
+    <header>
+        <h1>Admin Panel</h1>
+        <div class="header-options">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('admin_settings') }}">Settings</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </header>
 
-    <h2>Existing Users</h2>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Roles</th>
-        </tr>
-        {% for user in users %}
-        <tr>
-            <td>{{ user[0] }}</td>
-            <td>{{ user[1] }}</td>
-            <td>
-                {% if user[2] %}Admin{% endif %}
-                {% if user[3] %}Master Agent{% endif %}
-                {% if user[4] %}Super Agent{% endif %}
-                {% if user[5] %}User Agent{% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <main>
+        <div class="search-container">
+            <h2>Manage Users</h2>
+            <form method="GET" action="{{ url_for('admin_panel') }}">
+                <input type="text" name="search" placeholder="Search user" value="{{ request.args.get('search') }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Agent Creation Form -->
+        <h2>Create New Agent</h2>
+        <form action="{{ url_for('admin_panel') }}" method="POST">
+            <label for="username">Username</label>
+            <input type="text" name="username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" required>
+            
+            <label for="role">Role</label>
+            <select name="role" required>
+                <option value="master_agent">Master Agent</option>
+                <option value="super_agent">Super Agent</option>
+                <option value="user_agent">User Agent</option>
+            </select>
+            
+            <button type="submit">Create Agent</button>
+        </form>
+
+        <h2>Existing Users</h2>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Status</th>
+                <th>Balance</th>
+                <th>Exposure</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>
+                    {% if user[2] %}Admin{% endif %}
+                    {% if user[3] %}Master Agent{% endif %}
+                    {% if user[4] %}Super Agent{% endif %}
+                    {% if user[5] %}User Agent{% endif %}
+                </td>
+                <td>{{ 'Blocked' if user[6] else 'Active' }}</td>
+                <td>{{ total_balance }}</td>
+                <td>{{ total_exposure }}</td>
+                <td>
+                    {% if user[6] %}
+                        <a href="{{ url_for('block_user', user_id=user[0], action='unblock') }}" class="unblock">Unblock</a>
+                    {% else %}
+                        <a href="{{ url_for('block_user', user_id=user[0], action='block') }}" class="block">Block</a>
+                    {% endif %}
+                    <a href="{{ url_for('approve_transaction', transaction_id=user[0], action='approve') }}">Approve</a>
+                    <a href="{{ url_for('approve_transaction', transaction_id=user[0], action='reject') }}">Reject</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Karim Bet. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
