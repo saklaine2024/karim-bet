@@ -73,28 +73,28 @@
     <nav class="submenu">
         <ul>
             <li onclick="loadSection('sports')">
-                <img src="static/Asset/img/game logo.svg" alt="Sports" class="submenu-icon"> Sports
+                <div><img src="static/Asset/img/game logo.svg" alt="Sports" class="submenu-icon"><div class="submenu-name">Sports</div></div>
             </li>
             <li onclick="loadSection('hot')">
-                <img src="static/Asset/img/hot.gif" alt="Hot" class="submenu-icon"> Hot
+                <div><img src="static/Asset/img/hot.gif" alt="Hot" class="submenu-icon"><div class="submenu-name">Hot</div></div>
             </li>
             <li onclick="loadSection('casino')">
-                <img src="static/Asset/img/casino logo.svg" alt="Casino" class="submenu-icon"> Casino
+                <div><img src="static/Asset/img/casino logo.svg" alt="Casino"class="submenu-icon"><div class="submenu-name">Casino</div></div>
             </li>
             <li onclick="loadSection('slot')">
-                <img src="static/Asset/img/icon-slot.svg" alt="Slot" class="submenu-icon"> Slot
+                <div><img src="static/Asset/img/icon-slot.svg" alt="Slot" class="submenu-icon"><div class="submenu-name">Slot</div></div>
             </li>
             <li onclick="loadSection('table')">
-                <img src="static/Asset/img/icon-table.svg" alt="Table" class="submenu-icon"> Table
+                <div><img src="static/Asset/img/icon-table.svg" alt="Table" class="submenu-icon"><div class="submenu-name">Table</div></div>
             </li>
             <li onclick="loadSection('fishing')">
-                <img src="static/Asset/img/icon-fish.svg" alt="Fishing" class="submenu-icon"> Fishing
+                <div><img src="static/Asset/img/icon-fish.svg" alt="Fishing" class="submenu-icon"><div class="submenu-name">Fishing</div></div>
             </li>
             <li onclick="loadSection('arcade')">
-                <img src="static/Asset/img/icon-exchange.svg" alt="Arcade" class="submenu-icon"> Arcade
+                <div><img src="static/Asset/img/icon-exchange.svg" alt="Arcade" class="submenu-icon"><div class="submenu-name">Arcade</div></div>
             </li>
             <li onclick="loadSection('lottery')">
-                <img src="static/Asset/img/icon-lottery.svg" alt="Lottery" class="submenu-icon"> Lottery
+                <div><img src="static/Asset/img/icon-lottery.svg" alt="Lottery" class="submenu-icon"><div class="submenu-name">Lottery</div></div>
             </li>
         </ul>
     </nav>
@@ -103,24 +103,27 @@
     <main class="main-content" id="mainContent">
 
         {% if 'user_id' in session %}
-        {% if balance != 0 %}
-        <!-- Display balance when requested -->
-        <div class="balance-toggle">
-            <button id="toggleBalanceBtn" class="button">Tap to See Balance</button>
-            <strong>Your Balance: </strong>{{ balance }}
-            <div id="toggleBalanceBtn" class="balance-toggle">
-            </div>
+    <div class="balance-toggle">
+        <button id="toggleBalanceBtn" class="button">Tap to See Balance</button>
+        <!-- Balance Box that will show the balance when the button is clicked -->
+        <div id="balanceBox" class="balance-box" style="display: none;">
+            <strong>Your Balance: </strong>
+            {% if balance == 0 %}
+                0 BDT
+            {% else %}
+                {{ balance }} BDT
+            {% endif %}
         </div>
-    {% endif %}
-    {% endif %}
+    </div>
+{% endif %}
 
         <!-- Hot Games Section -->
         <section class="hot-games">
             <h2>Hot Games</h2>
             <div class="games-slider" id="gamesContainer">
-                <div class="game"><img src="static/Asset/img/monopoly.webp" alt="Monopoly"></div>
-                <div class="game"><img src="static/Asset/img/andarbahar.webp" alt="Andarbahar"></div>
-                <div class="game"><img src="static/Asset/img/dragontiger.webp" alt="dragontiger"></div>
+                <div class="game"><img src="static/Asset/img/monopoly.webp" alt="Monopoly"> <div class="game-name">Monopoly</div></div>
+                <div class="game"><img src="static/Asset/img/andarbahar.webp" alt="Andarbahar"> <div class="game-name">Andarbahar</div></div>
+                <div class="game"><img src="static/Asset/img/dragontiger.webp" alt="dragontiger"> <div class="game-name">DragonTiger</div></div>
             </div>
         </section>
 
@@ -128,10 +131,10 @@
         <section class="popular-casino">
             <h2>Popular Casino</h2>
             <div class="games-slider">
-                <div class="game"><img src="static/Asset/img/aviator.webp" alt="Aviator"></div>
-                <div class="game"><img src="static/Asset/img/7up7down.webp" alt="7 Up 7 Down"></div>
-                <div class="game"><img src="static/Asset/img/evolution.webp" alt="evolution"></div>
-                <div class="game"><img src="static/Asset/img/funkytime.webp" alt="Funkytime"></div>
+                <div class="game"><img src="static/Asset/img/aviator.webp" alt="Aviator"> <div class="game-name">Aviator</div></div>
+                <div class="game"><img src="static/Asset/img/7up7down.webp" alt="7 Up 7 Down"> <div class="game-name">7up 7down</div></div>
+                <div class="game"><img src="static/Asset/img/evolution.webp" alt="evolution"> <div class="game-name">Evolution</div></div>
+                <div class="game"><img src="static/Asset/img/funkytime.webp" alt="Funkytime"> <div class="game-name">Funkytime</div></div>
             </div>
         </section>
 
@@ -139,19 +142,43 @@
         <section class="favourite-games">
             <h2>Favourite Games</h2>
             <div class="games-slider">
-                <div class="game"><img src="static/Asset/img/jilli.webp" alt="JILI"></div>
-                <div class="game"><img src="static/Asset/img/crazytime.webp" alt="Crezy Time"></div>
-                <div class="game"><img src="static/Asset/img/supersicbo.webp" alt="Super Sicbo"></div>
+                <div class="game"><img src="static/Asset/img/jilli.webp" alt="JILI"> <div class="game-name">JILI</div></div>
+                <div class="game"><img src="static/Asset/img/crazytime.webp" alt="Crezy Time"> <div class="game-name">Crazy Time</div></div>
+                <div class="game"><img src="static/Asset/img/supersicbo.webp" alt="Super Sicbo"> <div class="game-name">Sicbo</div></div>
             </div>
         </section>
     </main>
+
+    <!-- WhatsApp Button -->
+<div id="whatsappButton" class="chat-button whatsapp-button">
+    <i class="fab fa-whatsapp"></i>  <!-- Use Font Awesome's WhatsApp icon -->
+</div>
+
+<!-- Telegram Button -->
+<div id="telegramButton" class="chat-button telegram-button">
+    <i class="fab fa-telegram-plane"></i>  <!-- Use Font Awesome's Telegram icon -->
+</div>
+
+<!-- Popup Chat Box (if needed) -->
+<div id="chatPopup" class="chat-popup">
+    <div class="chat-header">
+        <strong>Live Chat</strong>
+        <button onclick="closeChat()" class="close-button">X</button>
+    </div>
+    <div class="chat-body">
+        <p>How can we assist you today?</p>
+        <input type="text" id="chatInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
 
     <footer class="footer">
         <div class="payment-methods">
             <h3>Payment Methods</h3>
             <div class="payment-logos">
                 <img src="static/Asset/img/bkash.png" alt="bKash" class="payment-logo">
-                <img src="static/Asset/img/nogod.png" alt="Nogod" class="payment-logo">
+                <img src="static/Asset/img/Nogod.png" alt="Nogod" class="payment-logo">
                 <img src="static/Asset/img/rocket.png" alt="Rocket" class="payment-logo">
                 <img src="static/Asset/img/upai.png" alt="Upai" class="payment-logo">
                 <img src="static/Asset/img/bank.png" alt="Bank" class="payment-logo">
@@ -172,23 +199,18 @@
     </footer>
 
     <script>
-        // Toggle Balance visibility
+         // When the user clicks the "Tap to See Balance" button
     document.getElementById('toggleBalanceBtn').addEventListener('click', function() {
         const balanceBox = document.getElementById('balanceBox');
+        
+        // Toggle the visibility of the balance box
         balanceBox.style.display = (balanceBox.style.display === 'block') ? 'none' : 'block';
+        
+        // Hide the balance box after 30 seconds
+        setTimeout(function() {
+            balanceBox.style.display = 'none';
+        }, 30000);  // 30 seconds
     });
-    
-    <!-- Show balance for 30 seconds -->
-            // Handle Balance Toggle
-        document.getElementById('toggleBalanceBtn').addEventListener('click', function() {
-            const balanceDisplay = document.getElementById('balanceDisplay');
-            balanceDisplay.style.display = (balanceDisplay.style.display === 'block') ? 'none' : 'block';
-
-            // Automatically hide the balance after 30 seconds
-            setTimeout(function() {
-                balanceDisplay.style.display = '0';
-            }, 30000);  // 30 seconds
-        });
 
         // Function to toggle the visibility of the mobile menu
         function toggleMenu() {
@@ -210,60 +232,60 @@
             if (section === 'sports') {
                 // Specific images for the "sports" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/cricket.png" alt="Cricket"></div>
-                    <div class="game"><img src="static/asset/img/football.png" alt="Football"></div>
-                    <div class="game"><img src="static/asset/img/basketball.png" alt="basketball"></div>
+                    <div class="game"><img src="static/asset/img/cricket.png" alt="Cricket"> <div class="game-name">Cricket</div></div>
+                    <div class="game"><img src="static/asset/img/football.png" alt="Football"> <div class="game-name">Football</div></div>
+                    <div class="game"><img src="static/asset/img/basketball.png" alt="basketball"> <div class="game-name">Basketball</div></div>
                 `;
             } else if (section === 'hot') {
                 // Specific images for the "hot" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/aviator.webp" alt="Aviator"></div>
-                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"></div>
-                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"></div>
+                    <div class="game"><img src="static/asset/img/aviator.webp" alt="Aviator"> <div class="game-name">Aviator</div></div>
+                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
+                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
                 `;
             } else if (section === 'casino') {
                 // Specific images for the "casino" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"></div>
-                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="Crazycoinflip"></div>
-                    <div class="game"><img src="static/asset/img/dragontiger.webp" alt="DragonTiger"></div>
-                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune-gems"></div>
-                    <div class="game"><img src="static/asset/img/moneycoming.webp" alt="Moneycoming"></div>
+                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
+                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="Crazycoinflip"> <div class="game-name">CoinFlip</div></div>
+                    <div class="game"><img src="static/asset/img/dragontiger.webp" alt="DragonTiger"> <div class="game-name">DragonTiger</div></div>
+                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune-gems"> <div class="game-name">Fortune</div></div>
+                    <div class="game"><img src="static/asset/img/moneycoming.webp" alt="Moneycoming"> <div class="game-name">MoneyComing</div></div>
                 `;
             } else if (section === 'slot') {
                 // Specific images for the "slot" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/monopoly.webp" alt="Monopoly"></div>
-                    <div class="game"><img src="static/asset/img/pp.webp" alt="Private Play"></div>
-                    <div class="game"><img src="static/asset/img/lightingroulette.webp" alt="Lightingroulette"></div>
+                    <div class="game"><img src="static/asset/img/monopoly.webp" alt="Monopoly"> <div class="game-name">Monopoly</div></div>
+                    <div class="game"><img src="static/asset/img/pp.webp" alt="Private Play"> <div class="game-name">Private Play</div></div>
+                    <div class="game"><img src="static/asset/img/lightingroulette.webp" alt="Lightingroulette"> <div class="game-name">Lightingroulette</div></div>
                 `;
             } else if (section === 'table') {
                 // Specific images for the "table" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/spade.png" alt="Spade"></div>
-                    <div class="game"><img src="static/asset/img/superace.webp" alt="Superace"></div>
-                    <div class="game"><img src="static/asset/img/supersicbo.webp" alt="Supersicbo"></div>
+                    <div class="game"><img src="static/asset/img/spade.png" alt="Spade"> <div class="game-name">Spade</div></div>
+                    <div class="game"><img src="static/asset/img/superace.webp" alt="Superace"> <div class="game-name">Superace</div></div>
+                    <div class="game"><img src="static/asset/img/supersicbo.webp" alt="Supersicbo"> <div class="game-name">Supersicbo</div></div>
                 `;
             } else if (section === 'fishing') {
                 // Specific images for the "fishing" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/jdb.png" alt="JDB"></div>
-                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune Gem"></div>
-                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"></div>
+                    <div class="game"><img src="static/asset/img/jdb.png" alt="JDB"> <div class="game-name">JDB</div></div>
+                    <div class="game"><img src="static/asset/img/fortune-gems.webp" alt="Fortune Gem"> <div class="game-name">Fortune Gem</div></div>
+                    <div class="game"><img src="static/asset/img/cointoss.webp" alt="Cointoss"> <div class="game-name">Cointoss</div></div>
                 `;
             } else if (section === 'arcade') {
                 // Specific images for the "arcade" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="CrazyCoinFlip"></div>
-                    <div class="game"><img src="static/asset/img/bonus-dice.webp" alt="Bonus Dice"></div>
-                    <div class="game"><img src="static/asset/img/mine swipper.webp" alt="Mine Swipper"></div>
+                    <div class="game"><img src="static/asset/img/crazycoinflip.webp" alt="CrazyCoinFlip"> <div class="game-name">CrazyCoin</div></div>
+                    <div class="game"><img src="static/asset/img/bonus-dice.webp" alt="Bonus Dice"> <div class="game-name">Bonus Dice</div></div>
+                    <div class="game"><img src="static/asset/img/mine swipper.webp" alt="Mine Swipper"> <div class="game-name">Mine Swipper</div></div>
                 `;
             } else if (section === 'lottery') {
                 // Specific images for the "lottery" category
                 gamesContainer.innerHTML = `
-                    <div class="game"><img src="static/asset/img/americanroll.webp" alt="American Roll"></div>
-                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"></div>
-                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"></div>
+                    <div class="game"><img src="static/asset/img/americanroll.webp" alt="American Roll"> <div class="game-name">American Roll</div></div>
+                    <div class="game"><img src="static/asset/img/crazytime.webp" alt="CrazyTime"> <div class="game-name">CrazyTime</div></div>
+                    <div class="game"><img src="static/asset/img/number matka.webp" alt="Number Matka"> <div class="game-name">Number Matka</div></div>
                 `;
             } else {
                 // Default behavior for when no category matches (optional)
@@ -275,24 +297,39 @@
             }
         }
         
-        // Connect to the WebSocket server
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
+     // Function to open the chat popup
+function openChat() {
+    const chatPopup = document.getElementById('chatPopup');
+    chatPopup.style.display = 'block';  // Show the popup
+}
 
-        // Receive messages and display them in the activity div
-        socket.on('message', function(msg) {
-            var activityDiv = document.getElementById('activity');
-            var newMessage = document.createElement('p');
-            newMessage.textContent = msg;
-            activityDiv.appendChild(newMessage);
-        });
+// Function to close the chat popup
+function closeChat() {
+    const chatPopup = document.getElementById('chatPopup');
+    chatPopup.style.display = 'none';  // Hide the popup
+}
 
-        // Send a message when the button is clicked
-        document.getElementById('sendMessageBtn').onclick = function() {
-            var message = document.getElementById('messageInput').value;
-            socket.send(message);  // Send the message to the server
-            document.getElementById('messageInput').value = ''; // Clear the input
-        };
+// Optionally, add a message handler if you plan to implement live chat
+function sendMessage() {
+    const chatInput = document.getElementById('chatInput');
+    const message = chatInput.value;
     
+    if (message.trim()) {
+        alert("Message Sent: " + message);  // Replace with your chat system's logic
+        chatInput.value = '';  // Clear input after sending
+    }
+}
+
+// Open chat when WhatsApp button is clicked
+document.getElementById('whatsappButton').addEventListener('click', function() {
+    openChat();  // You can customize this to open WhatsApp chat or popups
+});
+
+// Open chat when Telegram button is clicked
+document.getElementById('telegramButton').addEventListener('click', function() {
+    openChat();  // You can customize this to open Telegram chat or popups
+});
+
     </script>
     
 </body>

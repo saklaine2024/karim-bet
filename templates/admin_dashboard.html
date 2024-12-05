@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <h2>Create User</h2>
+    <form method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            <option value="master_agent">Master Agent</option>
+            <option value="super_agent">Super Agent</option>
+            <option value="user_agent">User Agent</option>
+        </select><br>
+        <button type="submit">Create</button>
+    </form>
+
+    <h2>Existing Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Roles</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+            <td>
+                {% if user[2] %}Admin{% endif %}
+                {% if user[3] %}Master Agent{% endif %}
+                {% if user[4] %}Super Agent{% endif %}
+                {% if user[5] %}User Agent{% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
