@@ -130,6 +130,51 @@
             border-radius: 5px;
         }
 
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 50px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
         .search-container {
             display: flex;
             justify-content: space-between;
@@ -164,22 +209,6 @@
             padding: 10px 0;
             margin-top: 50px;
         }
-
-        .flash-messages {
-            margin: 20px 0;
-            list-style: none;
-            padding: 0;
-        }
-
-        .flash.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .flash.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
     </style>
 </head>
 <body>
@@ -213,7 +242,6 @@
         {% endif %}
         {% endwith %}
 
-        <!-- Agent Creation Form -->
         <h2>Create New Agent</h2>
         <form action="{{ url_for('admin_panel') }}" method="POST">
             <label for="username">Username</label>
@@ -229,6 +257,9 @@
                 <option value="user_agent">User Agent</option>
             </select>
             
+            <label for="commission">Commission Percentage</label>
+            <input type="text" name="commission_percentage" required>
+            
             <button type="submit">Create Agent</button>
         </form>
 
@@ -241,6 +272,9 @@
                 <th>Status</th>
                 <th>Balance</th>
                 <th>Exposure</th>
+                <th>Deposit Enabled</th>
+                <th>Withdraw Enabled</th>
+                <th>Commission Enabled</th>
                 <th>Actions</th>
             </tr>
             {% for user in users %}
@@ -257,21 +291,74 @@
                 <td>{{ total_balance }}</td>
                 <td>{{ total_exposure }}</td>
                 <td>
-                    {% if user[6] %}
-                        <a href="{{ url_for('block_user', user_id=user[0], action='unblock') }}" class="unblock">Unblock</a>
-                    {% else %}
-                        <a href="{{ url_for('block_user', user_id=user[0], action='block') }}" class="block">Block</a>
-                    {% endif %}
-                    <a href="{{ url_for('approve_transaction', transaction_id=user[0], action='approve') }}">Approve</a>
-                    <a href="{{ url_for('approve_transaction', transaction_id=user[0], action='reject') }}">Reject</a>
+                    <label class="switch">
+                        <input type="checkbox" {% if user[7] == 1 %}checked{% endif %} onclick="toggleDeposit({{ user[0] }})">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" {% if user[8] == 1 %}checked{% endif %} onclick="toggleWithdraw({{ user[0] }})">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" {% if user[9] == 1 %}checked{% endif %} onclick="toggleCommission({{ user[0] }})">
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    <a href="{{ url_for('block_user', user_id=user[0], action='unblock') }}" class="unblock">Unblock</a>
+                    <a href="{{ url_for('block_user', user_id=user[0], action='block') }}" class="block">Block</a>
                 </td>
             </tr>
             {% endfor %}
         </table>
+
+        <h2>Commission Withdrawal Requests</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for withdrawal in commission_withdrawals %}
+                <tr>
+                    <td>{{ withdrawal[1] }}</td>
+                    <td>{{ withdrawal[2] }}</td>
+                    <td>{{ withdrawal[3] }}</td>
+                    <td>
+                        <a href="{{ url_for('approve_commission_withdrawal', withdrawal_id=withdrawal[0], action='approve') }}" class="approve">Approve</a>
+                        <a href="{{ url_for('approve_commission_withdrawal', withdrawal_id=withdrawal[0], action='reject') }}" class="reject">Reject</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
     </main>
 
     <footer>
         <p>&copy; 2024 Karim Bet. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        function toggleDeposit(user_id) {
+            fetch(`/admin/toggle_deposit/${user_id}`, { method: 'POST' });
+        }
+
+        function toggleWithdraw(user_id) {
+            fetch(`/admin/toggle_withdraw/${user_id}`, { method: 'POST' });
+        }
+
+        function toggleCommission(user_id) {
+            fetch(`/admin/toggle_commission/${user_id}`, { method: 'POST' });
+        }
+    </script>
 </body>
 </html>

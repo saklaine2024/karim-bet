@@ -82,12 +82,15 @@ def signup():
         password = request.form['password']
         referral_code = request.form.get('referral_code')
 
+        # Validate username and password
         if not username or not password:
             flash("Username or password cannot be empty!", "error")
             return render_template('signup.html')
 
+        # Hash the password
         hashed_password = hash_password(password)
 
+        # Check referral code validity (optional)
         referred_by = None
         if referral_code:
             connection = connect_db()
@@ -99,22 +102,28 @@ def signup():
             if not referred_by:
                 flash("Invalid referral code.", "error")
                 return render_template('signup.html')
-            referred_by = referred_by[0]  # Set the referring agent's ID
+            referred_by = referred_by[0]  # Assign referring user's ID
 
+        # Create a new user with default role (User)
         try:
             connection = connect_db()
             cursor = connection.cursor()
             cursor.execute(
-                "INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent, referred_by) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (username, hashed_password, 0, 0, 0, 1, referred_by)  # Default as User
+                """
+                INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent, is_blocked, referred_by)
+                VALUES (?, ?, 0, 0, 0, 1, 0, ?)
+                """,
+                (username, hashed_password, referred_by)
             )
             connection.commit()
             connection.close()
 
-            flash("User created successfully!", "success")
+            flash("User account created successfully!", "success")
             return redirect(url_for('signin'))
         except sqlite3.IntegrityError:
             flash("Username already exists!", "error")
+            return render_template('signup.html')
+
     return render_template('signup.html')
 
 # Route to sign in
@@ -138,7 +147,7 @@ def signin():
                 'super_agent' if user[5] else
                 'user'
             )
-            session['is_blocked'] = user[6]
+
             flash(f"Signed in as {session['role'].replace('_', ' ').capitalize()}!", "success")
             return redirect(url_for('dashboard'))
 
@@ -203,6 +212,7 @@ def admin_panel():
         username = request.form['username']
         password = request.form['password']
         role = request.form['role']
+        commission_percentage = request.form['commission_percentage']
 
         hashed_password = hash_password(password)
 
@@ -213,8 +223,8 @@ def admin_panel():
 
         try:
             cursor.execute(
-                "INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent) VALUES (?, ?, ?, ?, ?, ?)",
-                (username, hashed_password, 0, is_master_agent, is_super_agent, is_user_agent)
+                "INSERT INTO users (username, password, is_admin, is_master_agent, is_super_agent, is_user_agent, commission_percentage) VALUES (?, ?, 0, ?, ?, ?, ?)",
+                (username, hashed_password, is_master_agent, is_super_agent, is_user_agent, commission_percentage)
             )
             connection.commit()
             flash(f"{role.replace('_', ' ').capitalize()} created successfully!", "success")
