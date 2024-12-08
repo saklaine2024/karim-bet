@@ -27,11 +27,11 @@ CREATE TABLE `balance_history` (
   `user_id` int NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `type` enum('deposit','withdrawal') NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `balance_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,11 +57,11 @@ CREATE TABLE `banking_requests` (
   `request_type` enum('deposit','withdrawal') NOT NULL,
   `status` enum('pending','approved','rejected') DEFAULT 'pending',
   `reason` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `banking_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,12 +86,12 @@ CREATE TABLE `user_activity` (
   `user_id` int NOT NULL,
   `activity_type` varchar(255) NOT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
-  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime DEFAULT 0,
   `username` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `user_activity_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,15 +112,15 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `username` varchar(191) NOT NULL,
+  `password` varchar(191) NOT NULL,
   `is_admin` tinyint(1) DEFAULT '0',
   `is_master_agent` tinyint(1) DEFAULT '0',
   `is_super_agent` tinyint(1) DEFAULT '0',
   `is_user_agent` tinyint(1) DEFAULT '1',
   `is_blocked` tinyint(1) DEFAULT '0',
   `referred_by` int DEFAULT NULL,
-  `referral_code` varchar(255) DEFAULT NULL,
+  `referral_code` varchar(191) DEFAULT NULL,
   `commission_percentage` float DEFAULT '0',
   `is_deposit_enabled` tinyint(1) DEFAULT '1',
   `is_withdraw_enabled` tinyint(1) DEFAULT '1',
@@ -131,7 +131,7 @@ CREATE TABLE `users` (
   KEY `fk_referred_by` (`referred_by`),
   CONSTRAINT `fk_referred_by` FOREIGN KEY (`referred_by`) REFERENCES `users` (`id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`referred_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,4 +153,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-08  6:11:23
+-- Dump completed on 2024-12-08 16:18:46
