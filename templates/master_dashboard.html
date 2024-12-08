@@ -61,6 +61,8 @@
                 <th>ID</th>
                 <th>Username</th>
                 <th>Role</th>
+                <th>Balance</th>
+                <th>Commission</th>
                 <th>Activity</th>
             </tr>
             {% for agent in agents_and_users %}
@@ -68,7 +70,9 @@
                 <td>{{ agent[0] }}</td>
                 <td>{{ agent[1] }}</td>
                 <td>{{ agent[3] }}</td>
-                <td>View Details</td>
+                <td>{{ agent[4] }} USD</td> <!-- Assuming agent[4] is balance -->
+                <td>{{ agent[5] }}%</td> <!-- Assuming agent[5] is commission -->
+                <td><a href="{{ url_for('view_activity', user_id=agent[0]) }}">View Activity</a></td>
             </tr>
             {% endfor %}
         </table>

@@ -129,17 +129,22 @@
         <section>
             <h2>Deposit</h2>
             <form method="POST" action="/banking">
+                <!-- Hidden input to differentiate deposit from withdrawal -->
                 <input type="hidden" name="action" value="deposit">
+
                 <label for="deposit-method">Deposit Method</label>
                 <select name="method" id="deposit-method" required>
                     <option value="bkash">bKash Agent</option>
                     <option value="rocket">Rocket Agent</option>
                     <option value="upai">Upai Agent</option>
                 </select>
+
                 <label for="deposit-amount">Amount</label>
                 <input type="number" name="amount" id="deposit-amount" required placeholder="Enter amount">
+
                 <label for="deposit-transaction">Transaction ID</label>
                 <input type="text" name="transaction_id" id="deposit-transaction" required placeholder="Transaction ID">
+
                 <button type="submit">Deposit</button>
             </form>
         </section>
@@ -147,17 +152,22 @@
         <section>
             <h2>Withdraw</h2>
             <form method="POST" action="/banking">
+                <!-- Hidden input to differentiate deposit from withdrawal -->
                 <input type="hidden" name="action" value="withdraw">
+
                 <label for="withdraw-method">Withdraw Method</label>
                 <select name="method" id="withdraw-method" required>
                     <option value="bkash">bKash</option>
                     <option value="rocket">Rocket</option>
                     <option value="upai">Upai</option>
                 </select>
+
                 <label for="withdraw-amount">Amount</label>
                 <input type="number" name="amount" id="withdraw-amount" required placeholder="Enter amount">
+
                 <label for="withdraw-phone">Phone Number</label>
                 <input type="text" name="phone_number" id="withdraw-phone" required placeholder="Phone number">
+
                 <button type="submit">Withdraw</button>
             </form>
         </section>

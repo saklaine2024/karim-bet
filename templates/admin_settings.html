@@ -77,6 +77,10 @@
             font-size: 14px;
             margin-top: 5px;
         }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -94,16 +98,22 @@
         {% endif %}
     {% endwith %}
 
-    <form action="/admin/settings" method="POST">
-        <label for="current_password">Current Password</label>
-        <input type="password" id="current_password" name="current_password" required>
+    <form action="{{ url_for('admin_settings') }}" method="POST">
+        <div class="form-group">
+            <label for="current_password">Current Password</label>
+            <input type="password" id="current_password" name="current_password" required>
+        </div>
 
-        <label for="new_password">New Password</label>
-        <input type="password" id="new_password" name="new_password" required>
+        <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password" required>
+        </div>
 
-        <label>
-            <input type="checkbox" id="showPassword"> Show Password
-        </label>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="showPassword"> Show Password
+            </label>
+        </div>
 
         <button type="submit">Change Password</button>
     </form>
@@ -111,8 +121,10 @@
 
 <script>
     document.getElementById('showPassword').addEventListener('change', function() {
-        var passwordField = document.getElementById('new_password');
-        passwordField.type = this.checked ? 'text' : 'password';
+        var currentPasswordField = document.getElementById('current_password');
+        var newPasswordField = document.getElementById('new_password');
+        currentPasswordField.type = this.checked ? 'text' : 'password';
+        newPasswordField.type = this.checked ? 'text' : 'password';
     });
 </script>
 

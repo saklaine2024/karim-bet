@@ -222,6 +222,31 @@
     </header>
 
     <main>
+        <h2>Pending Banking Requests</h2>
+<table>
+    <tr>
+        <th>User</th>
+        <th>Amount</th>
+        <th>Request Type</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    {% for request in banking_requests %}
+        <tr>
+            <td>{{ request[1] }}</td>
+            <td>{{ request[2] }}</td>
+            <td>{{ request[3] }}</td>
+            <td>{{ request[4] }}</td>
+            <td>
+                <a href="{{ url_for('approve_transaction', transaction_id=request[0], action='approve') }}">Approve</a> | 
+                <a href="{{ url_for('approve_transaction', transaction_id=request[0], action='reject') }}">Reject</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td colspan="5">No pending banking requests.</td></tr>
+    {% endfor %}
+</table>
+
         <div class="search-container">
             <h2>Manage Users</h2>
             <form method="GET" action="{{ url_for('admin_panel') }}">
@@ -311,6 +336,7 @@
                 <td>
                     <a href="{{ url_for('block_user', user_id=user[0], action='unblock') }}" class="unblock">Unblock</a>
                     <a href="{{ url_for('block_user', user_id=user[0], action='block') }}" class="block">Block</a>
+                    <a href="{{ url_for('delete_user', user_id=user[0]) }}">Delete</a>
                 </td>
             </tr>
             {% endfor %}

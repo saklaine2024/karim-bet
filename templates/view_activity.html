@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Activity</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Activity Log for User {{ user_id }}</h1>
+    <table>
+        <tr>
+            <th>Activity ID</th>
+            <th>Activity Type</th>
+            <th>Amount</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for activity in activities %}
+        <tr>
+            <td>{{ activity[0] }}</td>
+            <td>{{ activity[2] }}</td>
+            <td>{{ activity[3] }}</td>
+            <td>{{ activity[4] }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">No activity found for this user.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

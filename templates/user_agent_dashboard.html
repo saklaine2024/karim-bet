@@ -1,60 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <div class="user-agent-info">
+        <h3>Referral Code</h3>
+        <p style="font-size: 1.2em; font-weight: bold; color: #4caf50;">{{ user_agent_details[2] }}</p>
+    </div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Agent Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #ff9800;
-            color: white;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #333; }
+        .referral-code { background: #007bff; color: white; padding: 15px; font-size: 1.5em; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #007bff; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>User Agent Dashboard</h1>
+        <div class="referral-code">
+            <strong>Your Referral Code:</strong> {{ user_agent_details[2] }}
+        </div>
+        <h2>Welcome, {{ user_agent_details[0] }}</h2>
+        <p><strong>Commission Rate:</strong> {{ user_agent_details[1] }}%</p>
+        <p><strong>Total Activity:</strong> {{ user_agent_details[3] or 0 }}</p>
+        <p><strong>Total User Balances:</strong> {{ user_agent_details[4] or 0 }}</p>
+
+        <h2>User Activities</h2>
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Activity</th>
-            </tr>
-            {% for user in users %}
-            <tr>
-                <td>{{ user[0] }}</td>
-                <td>{{ user[1] }}</td>
-                <td>View Details</td>
-            </tr>
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Activity Type</th>
+                    <th>Amount</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in user_activities %}
+                <tr>
+                    <td>{{ activity[0] }}</td>
+                    <td>{{ activity[1] }}</td>
+                    <td>{{ activity[2] }}</td>
+                    <td>{{ activity[3] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </body>

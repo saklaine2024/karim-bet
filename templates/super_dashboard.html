@@ -5,71 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Agent Dashboard</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #4caf50;
-            color: white;
-        }
-        .btn {
-            display: inline-block;
-            background-color: #4caf50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            text-decoration: none;
-            margin: 10px 0;
-        }
-        .btn:hover {
-            background-color: #388e3c;
-        }
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; }
+        .container { max-width: 1200px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #4caf50; color: white; }
+        .btn { background-color: #4caf50; color: white; padding: 10px; border-radius: 4px; text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Super Agent Dashboard</h1>
+
+        <h2>Create User Agent</h2>
+        <form method="POST" action="{{ url_for('super_agent_dashboard') }}">
+            <label for="username">Username</label>
+            <input type="text" name="username" required>
+            <label for="password">Password</label>
+            <input type="password" name="password" required>
+            <label for="commission_percentage">Commission (%)</label>
+            <input type="number" name="commission_percentage" min="0" max="100" required>
+            <button type="submit" class="btn">Create User Agent</button>
+        </form>
+
+        <h2>User Agents</h2>
         <table>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Role</th>
-                <th>Activity</th>
-            </tr>
-            {% for sub_agent in sub_agents %}
-            <tr>
-                <td>{{ sub_agent[0] }}</td>
-                <td>{{ sub_agent[1] }}</td>
-                <td>User Agent</td>
-                <td>View Details</td>
-            </tr>
-            {% endfor %}
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Balance</th>
+                    <th>Commission (%)</th>
+                    <th>Referral Code</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for agent in user_agents %}
+                <tr>
+                    <td>{{ agent[0] }}</td>
+                    <td>{{ agent[1] }}</td>
+                    <td>{{ agent[2] }}</td>
+                    <td>{{ agent[3] }}</td>
+                    <td>{{ agent[4] }}</td>
+                    <td><a href="{{ url_for('view_activity', user_id=agent[0]) }}" class="btn">View Activity</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 </body>
