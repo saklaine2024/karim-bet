@@ -3,10 +3,10 @@ import bcrypt
 
 # MySQL connection configuration
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",  # Replace with your MySQL username
-    "password": "Shemu2024",  # Replace with your MySQL password
-    "database": "system_db"  # Name of your MySQL database
+    "host": "sql12.freesqldatabase.com",
+    "user": "sql12750538",  # Replace with your MySQL username
+    "password": "Please wait",  # Replace with your MySQL password
+    "database": "sql12750538"  # Name of your MySQL database
 }
 
 def create_database():
@@ -14,9 +14,9 @@ def create_database():
     Ensure the database exists before proceeding.
     """
     connection = mysql.connector.connect(
-        host=DB_CONFIG["host"],
-        user=DB_CONFIG["user"],
-        password=DB_CONFIG["password"]
+        host=DB_CONFIG["sql12.freesqldatabase.com"],
+        user=DB_CONFIG["sql12750538"],
+        password=DB_CONFIG["Please wait"]
     )
     cursor = connection.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS system_db;")  # Use 'system_db' instead of 'system'
