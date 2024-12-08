@@ -8,10 +8,10 @@ app = Flask(__name__, static_folder='static')
 app.secret_key = 'your_secret_key'
 
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",  # Replace with your MySQL username
-    "password": "Shemu2024",  # Replace with your MySQL password
-    "database": "system_db"  # Name of your MySQL database
+    "host": "sql12.freesqldatabase.com",
+    "user": "sql12750538",  # Replace with your MySQL username
+    "password": "3VCGWfZq57",  # Replace with your MySQL password
+    "database": "sql12750538"  # Name of your MySQL database
 }
 
 # Generate a unique referral code
