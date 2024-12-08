@@ -17,9 +17,10 @@ def create_database():
         host=DB_CONFIG["sql12.freesqldatabase.com"],
         user=DB_CONFIG["sql12750538"],
         password=DB_CONFIG["Please wait"]
+        database=DB_CONFIG["MYSQL_DB"],
     )
     cursor = connection.cursor()
-    cursor.execute("CREATE DATABASE IF NOT EXISTS system_db;")  # Use 'system_db' instead of 'system'
+    cursor.execute("CREATE DATABASE IF NOT EXISTS sql12750538;")  # Use 'system_db' instead of 'system'
     cursor.close()
     connection.close()
     print("Database created or verified successfully.")
