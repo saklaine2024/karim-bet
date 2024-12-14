@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Page</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0b3d0b;
+        color: #eaeaea;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #006400;
+        color: #fff;
+        padding: 15px 20px;
+        border-bottom: 1px solid #004d00;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    /* Make the logo clickable and redirect to homepage */
+    .logo-image a {
+        display: block;
+    }
+
+    .logo-image img {
+        width: 120px; /* Adjust the size of the logo */
+        height: auto;
+        cursor: pointer; /* Indicate that it's clickable */
+    }
+
+    /* Fullscreen iframe styling */
+    iframe {
+        width: 100vw;   /* Full width of the viewport */
+        height: 100vh;  /* Full height of the viewport */
+        border: none;   /* Remove border */
+    }
+
+    .footer {
+        background-color: #006400;
+        color: #eaeaea;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid #004d00;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <!-- Wrap the logo in a link to redirect to the homepage -->
+    <div class="logo-image">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='Asset/img/logo.png') }}" alt="Logo" class="logo-image">
+        </a>
+    </div>
+  </div>
+
+  <!-- Embedding the iframe to load the page -->
+  <iframe src="https://www.b1a2j3i4.xyz/exchange/member/index.jsp" title="Exchange"></iframe>
+
+  <div class="footer">
+    <h3>Footer Content</h3>
+    <p>Copyright 2024 - Your Website</p>
+  </div>
+
+</body>
+</html>

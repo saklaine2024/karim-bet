@@ -58,6 +58,56 @@ body {
     transition: all 0.3s ease;
 }
 
+/* General button styles */
+.header-options a {
+    background-color: #ffffff; /* Smooth white background */
+    color: #006400; /* Dark green text color */
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease; /* Smooth transition for hover and click effects */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Button hover effect */
+.header-options a:hover {
+    background-color: #f1f1f1; /* Light gray background on hover */
+    color: #00a000; /* Brighter green text on hover */
+    transform: translateY(-3px); /* Slight upward movement */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* Button active (click) effect */
+.header-options a:active {
+    transform: translateY(1px); /* Slight downward movement to simulate click */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Smaller shadow on click */
+}
+
+/* Icon styles within the button */
+.header-options a i {
+    font-size: 18px; /* Adjust icon size */
+    transition: color 0.3s ease;
+}
+
+/* Text inside the button */
+.header-options .button-text {
+    font-size: 14px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect on text and icon */
+.header-options a:hover i,
+.header-options a:hover .button-text {
+    color: #00a000; /* Change text and icon color on hover */
+}
+
 .header-options .button:hover {
     background-color: #00a000; /* Brighter green */
     color: #fff;
@@ -71,7 +121,7 @@ body {
     color: #0b3d0b;
     font-weight: bold;
     text-align: center;
-    padding: 8px 0;
+    padding: 4px 0;
     font-size: 14px;
     border-bottom: 1px solid #004d00;
 }
@@ -79,30 +129,98 @@ body {
 /* Site Menu */
 .site-menu {
     display: flex;
-    justify-content: space-around;
-    background-color: #006400; /* Deep green */
-    padding: 10px 0;
+    justify-content: space-between;
+    background-color: rgba(0, 100, 0, 0.7); /* Semi-transparent green */
+    padding: 8px 20px;
     color: white;
-    border-bottom: 1px solid #004d00;
+    border-bottom: 1px solid rgba(0, 77, 0, 0.8); /* Slightly transparent green border */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999; /* Ensures menu appears above other elements */
+    backdrop-filter: blur(10px); /* Blurs the background */
+    transition: background-color 0.3s ease; /* Smooth background color change */
 }
 
+/* Site Menu items */
 .site-menu ul {
     display: flex;
     list-style: none;
     gap: 20px;
+    margin: 0;
 }
 
+/* Site Menu list items */
 .site-menu li {
-    padding: 5px 10px;
+    padding: 8px 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 14px;
-    border-radius: 4px;
+    font-size: 16px;
+    border-radius: 6px;
+    font-weight: bold;
 }
 
+/* Hover effect for site menu items */
 .site-menu li:hover {
-    background-color: #00a000; /* Brighter green */
-    color: #fff;
+    background-color: rgba(0, 160, 0, 0.8); /* Hover green background with transparency */
+    color: white;
+}
+
+/* Hamburger Menu Styles (visible when menu is collapsed) */
+.hamburger-menu {
+    display: none;
+    cursor: pointer;
+}
+
+/* Styles for the menu on smaller screens */
+@media (max-width: 768px) {
+    .site-menu ul {
+        display: none; /* Hide menu items by default */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Position the menu below the fixed site menu */
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 100, 0, 0.9); /* Semi-transparent dark green background */
+        border-top: 1px solid rgba(0, 77, 0, 0.8);
+        padding: 20px;
+    }
+
+    /* When the menu is open, display the items */
+    .site-menu.open ul {
+        display: flex;
+        list-style: none;
+        gap: 15px;
+    }
+
+    /* Hamburger Icon */
+    .hamburger-menu {
+        display: block;
+        font-size: 30px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .hamburger-menu:hover {
+        color: #00a000; /* Hover effect on the hamburger menu icon */
+    }
+
+    /* Menu item in mobile view */
+    .site-menu li {
+        padding: 5px 10px;
+        font-size: 18px;
+    }
+
+    /* Smooth transition for menu visibility */
+    .site-menu ul {
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(-100%);
+    }
+
+    .site-menu.open ul {
+        transform: translateY(0); /* Slide-in effect */
+    }
 }
 
 /* Submenu Modern Sliding Bar */
@@ -167,9 +285,9 @@ body {
 }
 
 .submenu::-webkit-scrollbar-thumb {
-    background-color: #00a000; /* Green scrollbar thumb */
+    background-color: #00fc00; /* Green scrollbar thumb */
     border-radius: 10px;
-    border: 3px solid #004d00;
+    border: 3px solid #00fc00;
     transition: background-color 0.3s ease-in-out;
 }
 

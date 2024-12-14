@@ -538,6 +538,11 @@ def admin_settings():
 
     return render_template('admin_settings.html')
 
+@app.route('/game.html')
+def game():
+    game_name = request.args.get('game')  # Capture the 'game' query parameter
+    return render_template('game.html', game=game_name)  # Pass the game name to the template
+
 
 if __name__ == '__main__':
     app.run(debug=True)
