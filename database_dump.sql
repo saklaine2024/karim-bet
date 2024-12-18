@@ -1,5 +1,5 @@
 -- MySQL dump 10.13  Distrib 9.1.0, for Win64 (x86_64)
--- Host: localhost    Database: sql12750538
+-- Host: sql12.freesqldatabase.com    Database: sql12752727
 -- ------------------------------------------------------
 -- Server version    9.1.0
 
@@ -111,8 +111,8 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES 
-(9, 'admin', '$2b$12$f/RLqT1yrdnTX6qpAJuuVufOHGCZDDPqC8/0cKVU/mb8xFxOfpvSC', 1, 0, 0, 1, 0, NULL, 'ADMIN123', 0, 1, 1, 0.00),
-(15, 'watch', '$2b$12$r53ZGbzhgD9XXqZbkpj9v.yGcWND1Pfso0Gs5SM94AxptjkJQN6VW', 0, 0, 0, 1, 0, NULL, 'watch', 0, 1, 1, 0.00),
+(9, 'admin', '$2b$12$DH69n7e73BIQTYn/phm5QO.0t7DXgkzkBk3oIooQhcNBrRe6bb11m', 1, 0, 0, 1, 0, NULL, 'ADMIN123', 0, 1, 1, 0.00),
+(15, 'watch', '$2b$12$DH69n7e73BIQTYn/phm5QO.0t7DXgkzkBk3oIooQhcNBrRe6bb11m', 0, 0, 0, 1, 0, NULL, 'watch', 0, 1, 1, 0.00),
 (20, 'Shemu', '$2b$12$CxCzmf/LABxmMTGIaIQA8emYvFiuOxNfHA3jcocwJ343tLNgGb/26', 0, 0, 0, 1, 0, NULL, 'Shemu', 0, 1, 1, 0.00),
 (21, 'Master', '$2b$12$9mDoWFV59DieIuzr.XqxoeNm6h/djXkn9HqqIv9dYZQfnnH9x78Oe', 0, 0, 1, 0, 0, NULL, NULL, 10, 1, 1, 0.00),
 (22, 'Super', '$2b$12$l2sXp7RLGjyN2vxPZZqwHODNNbTaPqTjI8bAYLXcd2Jqu7ngNSmE6', 0, 1, 0, 0, 0, NULL, NULL, 10, 1, 1, 0.00),

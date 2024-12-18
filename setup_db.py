@@ -88,6 +88,7 @@ def setup_tables():
     VALUES (%s, %s, TRUE);
     """, ('admin', admin_password))
     print("Admin account created or verified successfully.")
+    
 
     # Insert a super agent account for testing purposes
     super_agent_password = bcrypt.hashpw("Karim@2024".encode("utf-8"), bcrypt.gensalt()).decode()
