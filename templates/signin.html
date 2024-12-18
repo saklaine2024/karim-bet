@@ -7,83 +7,104 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #006f3f, #009a5b); /* Bet365-style green gradient */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            color: #fff;
         }
 
         .container {
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 40px;
             width: 100%;
             max-width: 400px;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #333;
+            margin-bottom: 30px;
+            color: #4CAF50; /* Bet365's green color */
+            font-weight: bold;
         }
 
         label {
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: #333;
+            font-weight: 600;
         }
 
         input[type="text"],
         input[type="password"] {
             width: 100%;
-            padding: 10px;
+            padding: 14px;
             margin: 10px 0;
-            border-radius: 5px;
+            border-radius: 6px;
             border: 1px solid #ddd;
-            font-size: 14px;
-            transition: border-color 0.3s;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
 
         input[type="text"]:focus,
         input[type="password"]:focus {
-            border-color: #2575fc;
+            border-color: #4CAF50; /* Green border on focus */
+            outline: none;
         }
 
         .show-password {
             cursor: pointer;
-            color: #2575fc;
+            color: #4CAF50;
             font-size: 14px;
             margin-top: 5px;
+            display: block;
+            text-align: left;
         }
 
         button {
-            background-color: #2575fc;
-            color: white;
-            border: none;
-            padding: 12px;
             width: 100%;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 14px;
+            background-color: #4CAF50; /* Bet365's green color */
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #1a56db;
+            background-color: #45a049; /* Slightly darker green on hover */
         }
 
         .flash {
-            margin: 10px 0;
-            padding: 10px;
+            margin: 15px 0;
+            padding: 12px;
             background-color: #f8d7da;
             color: #721c24;
-            border-radius: 5px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 16px;
         }
 
+        .form-footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -104,11 +125,15 @@
             <input type="password" id="password" name="password" required>
 
             <label>
-                <input type="checkbox" id="showPassword"> Show Password
+                <input type="checkbox" id="showPassword" class="show-password"> Show Password
             </label>
 
             <button type="submit">Sign In</button>
         </form>
+
+        <div class="form-footer">
+            <p>Don't have an account? <a href="/signup">Sign up here</a></p>
+        </div>
     </div>
 
     <script>

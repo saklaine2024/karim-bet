@@ -9,9 +9,9 @@ app.secret_key = 'your_secret_key'
 
 DB_CONFIG = {
     "host": "sql12.freesqldatabase.com",
-    "user": "sql12750538",  # Replace with your MySQL username
-    "password": "3VCGWfZq57",  # Replace with your MySQL password
-    "database": "sql12750538"  # Name of your MySQL database
+    "user": "sql12752715",  # Replace with your MySQL username
+    "password": "sql12752715",  # Replace with your MySQL password
+    "database": "sql12752715"  # Name of your MySQL database
 }
 
 # Generate a unique referral code
@@ -483,7 +483,7 @@ def block_user(user_id, action):
     connection.close()
     return redirect(url_for('admin_panel'))
 
-# Delete user/agent account
+# Delete user/agent account - Permanent deletion
 @app.route('/admin/delete_user/<int:user_id>', methods=['GET', 'POST'])
 def delete_user(user_id):
     if 'user_id' not in session or session.get('role') != 'admin':
@@ -494,10 +494,10 @@ def delete_user(user_id):
     cursor = connection.cursor()
 
     try:
-        # Delete user/agent from users table
+        # Delete user/agent permanently from users table
         cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         connection.commit()
-        flash("User/Agent deleted successfully.", "success")
+        flash("User/Agent has been permanently deleted.", "success")
     except Exception as e:
         flash(f"Error deleting user: {str(e)}", "error")
         connection.rollback()

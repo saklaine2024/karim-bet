@@ -7,32 +7,35 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f7f6;
+            background: linear-gradient(135deg, #006f3f, #009a5b); /* Green gradient background */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #fff;
         }
 
         .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 350px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 380px;
             text-align: center;
+            max-width: 100%;
         }
 
         h2 {
-            margin-bottom: 20px;
-            font-size: 24px;
-            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #4CAF50; /* Bet365's green color */
+            font-weight: bold;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
@@ -40,40 +43,75 @@
             font-size: 14px;
             color: #333;
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         input[type="text"],
         input[type="password"],
         input[type="text"].referral {
             width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4CAF50; /* Focus border color */
+            outline: none;
         }
 
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
+            padding: 14px;
+            background-color: #4CAF50; /* Bet365's green color */
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #45a049; /* Slightly darker green */
         }
 
         .flash-message {
-            padding: 10px;
-            margin: 10px 0;
+            padding: 12px;
+            margin: 15px 0;
             background-color: #f8d7da;
             color: #721c24;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .form-footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .form-footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -84,7 +122,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="flash-message">{{ message }}</div>
+                <div class="flash-message {% if category == 'error' %}error{% else %}success{% endif %}">{{ message }}</div>
             {% endfor %}
         {% endif %}
         {% endwith %}
@@ -104,6 +142,10 @@
             </div>
             <button type="submit">Sign Up</button>
         </form>
+
+        <div class="form-footer">
+            <p>Already have an account? <a href="/login">Log in here</a></p>
+        </div>
     </div>
 </body>
 </html>
