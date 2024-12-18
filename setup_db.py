@@ -4,9 +4,10 @@ import bcrypt
 # MySQL connection configuration
 DB_CONFIG = {
    "host": "sql12.freesqldatabase.com",
-    "user": "sql12752715",  # Replace with your MySQL username
-    "password": "please wait",  # Replace with your MySQL password
-    "database": "sql12752715"  # Name of your MySQL database
+    "user": "sql12752727",  # Replace with your MySQL username
+    "password": "vy8scbDpCb",  # Replace with your MySQL password
+    "database": "sql12752727"  # Name of your MySQL database
+}
 
 def create_database():
     """
